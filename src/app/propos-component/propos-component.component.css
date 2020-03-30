@@ -1,0 +1,25 @@
+.about{
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    position: absolute;
+    top:40%;
+    left: 50%;
+}
+
+.col-lg-6{
+    position: relative;
+    top:-30%;
+    left:0%;
+}
+.about_content{
+    position: relative;
+    top:40%;
+    
+}
+.about_image{
+    position: relative;
+    top:20%;
+}
+#col{
+    height: 500px;
+}

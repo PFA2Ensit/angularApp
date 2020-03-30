@@ -1,0 +1,100 @@
+<!-- Toolbar -->
+<mat-toolbar id="tool" #toolbar [class.sticky] = "sticky" color="primary" class="header">
+  <div>Material Theme</div>
+  <span class="nav-tool-items">
+    <mat-icon (click)="sidenav.toggle()" class="hamburger">menu</mat-icon>
+  </span>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <!-- Sidenav -->
+  <mat-sidenav   #sidenav [mode]="isBiggerScreen() ? 'over' : 'side'" [(opened)]="opened" [fixedInViewport]="true"
+    [fixedTopGap]>
+    <mat-nav-list>
+      <a href="#home" mat-list-item>
+        <mat-icon>home</mat-icon>Home
+      </a>
+      <a href="#discover" mat-list-item>
+        <mat-icon>search</mat-icon> Discover Us
+      </a>
+      <a href="#recent" mat-list-item>
+        <mat-icon>content_paste</mat-icon> Recent adds
+      </a>
+      <a href="#para" mat-list-item>
+        <mat-icon>account_circle</mat-icon> Registration
+      </a>
+      <a href="#para"  mat-list-item>
+        <mat-icon>lock</mat-icon> Login
+      </a>
+      
+       
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <!-- Main content -->
+  <mat-sidenav-content >
+
+    <!-- Applying the mat-tyography class adds styles for native elements. -->
+
+
+    <!-- Angular material cards -->
+    <div class="productCards">
+      <mat-grid-list cols="4" rowHeight="200px">
+        <mat-grid-tile [colspan]="4" [rowspan]="3" id="home">
+          <mat-grid-tile-header id="header1"[style.background]="'grey'">
+            <h3><i class="fa fa-angle-right"></i> Welcome</h3>
+          </mat-grid-tile-header>
+          <app-carousel></app-carousel>
+
+
+
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="4" [rowspan]="3" id="discover">
+          <mat-grid-tile-header [style.background]="'grey'">
+            <h3><i class="fa fa-angle-right"></i> Fiew words about us</h3>
+
+          </mat-grid-tile-header>
+            <app-propos-component></app-propos-component>
+        </mat-grid-tile>
+        <mat-grid-tile id="recent" [colspan]="4" [rowspan]="5">
+          <mat-grid-tile-header [style.background]="'grey'">
+            <h3><i class="fa fa-angle-right"></i> Recent Properties</h3>
+          </mat-grid-tile-header>
+            <app-new-component></app-new-component>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="4" [rowspan]="4" >
+          <mat-grid-tile-header [style.background]="'grey'">
+            <h3><i class="fa fa-angle-right"></i> Bienvenue</h3>
+          </mat-grid-tile-header>
+ <app-universities></app-universities>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="4" [rowspan]="4">
+          <mat-grid-tile-header [style.background]="'grey'">
+            <h3><i class="fa fa-angle-right"></i> What our clients say about us</h3>
+          </mat-grid-tile-header>
+          <app-chat></app-chat>
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="4" [rowspan]="4" id ="para"class="view intro jarallax" >
+          <mat-grid-tile-header [style.background]="'grey'">
+            <h3><i class="fa fa-angle-right"></i>Registration/Login</h3>
+          </mat-grid-tile-header>
+         <app-contact-component></app-contact-component>
+        </mat-grid-tile>
+
+       
+        
+      </mat-grid-list>
+
+    </div>
+
+  <footer></footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+
+<router-outlet></router-outlet>
+
