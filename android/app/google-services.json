@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "819526135500",
+    "firebase_url": "https://comptably-6f09e.firebaseio.com",
+    "project_id": "comptably-6f09e",
+    "storage_bucket": "comptably-6f09e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819526135500:android:9e29299493f5a086f61c69",
+        "android_client_info": {
+          "package_name": "com.example.comptabli_blog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "819526135500-4ppi130vq4b11tj7jskaorckjae0gv5k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.comptabli_blog",
+            "certificate_hash": "44fd45beda4c0f2aa26dbdbbd1e52b37f1a30813"
+          }
+        },
+        {
+          "client_id": "819526135500-b25rp0rbvki5ke3ja38pjfap9ni3itij.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBvo2QyhyzxIKvU9cw_rNgC4BdKbpGFQE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "819526135500-b25rp0rbvki5ke3ja38pjfap9ni3itij.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
