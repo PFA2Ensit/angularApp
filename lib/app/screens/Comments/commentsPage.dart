@@ -25,13 +25,14 @@ class _CommentsPageState extends State<CommentsPage> {
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
         ),
-        body: Column(
+        body:Column(
+        
           children: [
             Expanded(
               child: CommentList(postId: widget.postId),
             ),
             Divider(),
-            CommentForm(postId: widget.postId,postOwnerId:widget.postOwnerId),
+            CommentForm(postId: widget.postId,postOwnerId:widget.postOwnerId,url:widget.postImage),
           ],
         ));
   }

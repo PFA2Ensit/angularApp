@@ -4,6 +4,7 @@ import 'package:comptabli_blog/app/shared_widgets/fade_slide_transition.dart';
 import 'package:comptabli_blog/app/themes/constants.dart';
 import 'package:comptabli_blog/core/utils/validators.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tags/input_tags.dart';
 
 import 'interests_screen.dart';
 
@@ -69,6 +70,9 @@ class _CompteFormState extends State<CompteForm>
     controller.dispose();
     super.dispose();
   }
+
+    List<String> _tags = [];
+
 
   // ignore: non_constant_identifier_names
   Widget ExpertiseRow() {
@@ -236,10 +240,44 @@ class _CompteFormState extends State<CompteForm>
                         color: Colors.black,
                       ),
                     ),
-                    /* FadeSlideTransition(
+                     FadeSlideTransition(
                         animation: _formElementAnimation,
                         additionalOffset: space,
                         child: new Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.elliptical(20, 20)),
+                                  border: Border.all(
+                                    width: 3,
+                                  ),
+                                ),
+                                height: 130.0,
+                                width: 370.0,
+                                child: InputTags(
+                                  color: kColorBlack,
+                                  tags: _tags,
+                                  onDelete: (tag) {
+                                    print(tag);
+                                  },
+                                  onInsert: (tag) {
+                                    print(tag);
+                                    _tags.add(tag);
+                                    compte.expertises = _tags;
+                                  },
+                                )
+
+                                /*ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: count,
+                              itemBuilder: (context, index) {
+                                return CategorieRow();
+                              }),*/
+                                )
+                        
+                        
+                        
+                        
+                        /*new Container(
                           decoration: BoxDecoration(
                             borderRadius:
                                 BorderRadius.all(Radius.elliptical(20, 20)),
@@ -255,7 +293,7 @@ class _CompteFormState extends State<CompteForm>
                               itemBuilder: (context, index) {
                                 return ExpertiseRow();
                               }),
-                        )),*/
+                        )*/),
                     new Container(
                       padding: new EdgeInsets.all(55.0),
                     ),

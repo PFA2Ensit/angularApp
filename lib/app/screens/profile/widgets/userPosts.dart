@@ -92,26 +92,39 @@ class _UserPostsState extends State<UserPosts> {
                     Scaffold.of(context)
                         .showSnackBar(SnackBar(content: Text("post deleted")));
                   },
-                  child: InkWell(onTap: () {}, child:Card(
-                      child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 260.0,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: NetworkImage(post[pos].imageUrl),
-                                    fit: BoxFit.fill)),
-                          )),
-                          ExpansionTile(title: Text(post[pos].name),subtitle:Text(post[pos].likes["counter"].toString()+" likes"),
-                          children: [ ZefyrView(
-              document: NotusDocument.fromJson(jsonDecode(post[pos].text)),
-            ),],)
-                    ],
-                  ))), /*ListTile(
+                  child: InkWell(
+                      onTap: () {},
+                      child: Card(
+                          child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 260.0,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: NetworkImage(post[pos].imageUrl),
+                                        fit: BoxFit.fill)),
+                              )),
+                          ExpansionTile(
+                            title: Text(post[pos].name),
+                            subtitle: post[pos].likes["counter"] != null && post[pos].likes["counter"] > 1
+                                ? Text(post[pos].likes["counter"].toString() +
+                                    " likes")
+                                : post[pos].likes["counter"] == 1
+                                    ? Text("1 like")
+                                    : Text("0 likes"),
+                            children: [
+                              ZefyrView(
+                                document: NotusDocument.fromJson(
+                                    jsonDecode(post[pos].text)),
+                              ),
+                            ],
+                          )
+                        ],
+                      ))), /*ListTile(
                     title: Text(
                       post[pos].name,
                       style: TextStyle(color: kColorBlack),

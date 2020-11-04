@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:comptabli_blog/app/screens/article_screen/articleList.dart';
 import 'package:comptabli_blog/app/screens/article_screen/widgets/appBar.dart';
-import 'package:comptabli_blog/app/screens/compte_screen/compte.dart';
 import 'package:comptabli_blog/app/screens/home/widget/declarations.dart';
 import 'package:comptabli_blog/app/screens/home/widget/numbers.dart';
 import 'package:comptabli_blog/app/themes/constants.dart';
@@ -21,13 +19,14 @@ void main() {
 }
 final usersReference = Firestore.instance.collection("users");
   final postsReference = Firestore.instance.collection("posts");
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
 
     final applicationFeedRef =  Firestore.instance.collection("feed");
       DateTime timestamp = DateTime.now();
 
 int notificationCount ;
 FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-final FirebaseAuth _auth = FirebaseAuth.instance;
 
 
 class HomeScreen extends StatefulWidget {
@@ -60,9 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
      onMessage: (Map<String, dynamic> message) async {
        final String recipientId = message["data"]["recipient"];
        final String body = message["notification"]["body"];
-        print("message");
-       print("onMessage: $message");
-       
+        
+              
        if(recipientId == user.uid){
          print("id = "+recipientId);
           setState((){
@@ -81,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
  void initState() {
    super.initState();
    notificationCount = 0;
-   configureRealTimePushNotifications() ;
+   //configureRealTimePushNotifications() ;
  }
 
 

@@ -25,13 +25,10 @@ class _ItemListState extends State<ItemList> {
   DateTime timestamp = DateTime.now();
   int likeCount;
   Map likes;
-  bool isLiked = false ;
-  
+  bool isLiked = false;
+
   _ItemListState({this.likeCount});
   String id;
-
-  
-   
 
   userId() async {
     FirebaseUser currentUser = await _auth.currentUser();
@@ -39,8 +36,6 @@ class _ItemListState extends State<ItemList> {
 
     return id;
   }
-
-  
 
   addLike() async {
     FirebaseUser currentUser = await _auth.currentUser();
@@ -110,18 +105,15 @@ class _ItemListState extends State<ItemList> {
 
   @override
   Widget build(BuildContext context) {
+    userId().then((value) => {
+          setState(() {
+            id = value;
+          })
+        });
 
-
-     userId().then((value) =>  {
-
-       setState(() {
-    id=value;
-  })
-  }              
-);
-    //isLiked = likes[id] == true; 
+    //isLiked = likes[id] == true;
     //print(isLiked = likes[id] == true );
-   /* var id = userId();
+    /* var id = userId();
     likes = widget.item.likes;
 
     */

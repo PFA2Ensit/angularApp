@@ -23,7 +23,7 @@ final usersReference = Firestore.instance.collection("users");
         .then((querySnapshot) {
       querySnapshot.documents.forEach((result) {
        Notifications notif = new Notifications(
-            id: result['commentId'],
+            id: result['id'],
             type:result["type"],
             postId: result['postId'],
             username: result['username'],

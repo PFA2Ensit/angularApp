@@ -56,6 +56,22 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         yield CommentFetchErrorState(message: e.toString());
       }
     }
+    if (event is CommentUpdateEvent) {
+      try {
+        await repository.updateComment(event.comment,event.id,event.commentId);
+        yield CommentSuccess();
+      } on PlatformException catch (error) {
+        yield CommentFailed(error: error);
+      } catch (ex) {
+        yield CommentFailed(
+          error: PlatformException(
+            code: ex.toString(),
+            message:
+                'An error has occued when updating your comment, please try again later',
+          ),
+        );
+      }
+    }
 
 
 

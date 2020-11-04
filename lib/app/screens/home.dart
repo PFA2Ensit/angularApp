@@ -15,6 +15,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'article_screen/search.dart';
+import 'messagingDemo.dart';
 import 'notifications/notificationsScreen.dart';
 import 'notifications/widgets/notifDot.dart';
 
@@ -73,7 +74,8 @@ class ButtomNavigation extends StatefulWidget{
       key: scaffoldKey,
       body:PageView(
        children:<Widget>[
-        HomeScreen(),
+        //HomeScreen(),
+        MessagingDemo(),
         Search(),
         ArticleScreen(),
 

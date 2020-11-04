@@ -79,7 +79,7 @@ class _NotifItemtate extends State<NotifItem> {
                     TextSpan(
                         text: notif[pos].username,
                         style: TextStyle(fontWeight: FontWeight.bold)),
-                    TextSpan(text: "$notificationItemText"),
+                    TextSpan(text: " $notificationItemText"),
                   ]),
                 ),
                 subtitle: Text(

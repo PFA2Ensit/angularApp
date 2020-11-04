@@ -1,6 +1,8 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
+const settings = {/* your settings... */ timestampsInSnapshots: true};
+admin.firestore().settings(settings);
 
 
 exports.onCreateActivityFeedItem = functions.firestore
@@ -31,7 +33,7 @@ exports.onCreateActivityFeedItem = functions.firestore
         switch (activityFeedItem.type)
         {
             case "comment":
-                body = `${activityFeedItem.username} sent comment: ${activityFeedItem.commentData}`;
+                body = `${activityFeedItem.username} sent comment: ${activityFeedItem.comment}`;
                 break;
 
             case "like":
@@ -46,23 +48,42 @@ exports.onCreateActivityFeedItem = functions.firestore
             break;
         }
 
+        var tokens = ['fjiuZ3YqHyk:APA91bGCxzAcEMgwRoVLVg5T3qj_GTidEp0FZz4nv_e0tF2lDRiaK4oJZg-U_NmCX1uSGYmk5MihWvlwFB_fO3W_sOXfyKKlYUxEev4sWxE-LVUqwmPd0ABNQxWoFULKnuXBBOWkFjo5'];
+
+
         const message =
         {
             notification: { body },
-            token: "ctoZJQYm27s:APA91bFEIdsBSvTy1sfBJEW4GTb_GuXajxuxiMweQ2wg8DHyKuu15RS8dsvOz34ImCdt-77m48gUwYsQlPisBl2siUzQ45wsc684hMmNlbLBnIpECvqdoI9yWc4kvJmsjAHIXWZD3WB-",
+           // token: 'erI48pc6kPE:APA91bF6pN03lwhTvfTJcz22LeZW8gD7GMSHW6wiO2vZoNHBsXlQyIoEwr9pFPQG709qKaYBHMbFRLbpKT72B1zyGM9Rl1BeutgIEUdYf-ehLMe23YluwbNBGkXa0ijDBdOZLwyY_PyW',
             data: { recipient: id },
         };
 
-        admin.messaging().send(message)
+        var payload = {
+            notification: {
+                //title: 'Push Title',
+                body: body,
+                sound: 'default',
+            },
+            data: {
+                push_key: 'Push Key Value',
+                key1: 'sample message',
+            },
+        };
+
+        admin.messaging().sendToDevice(tokens,payload)
         .then(response =>
         {
             console.log("Successfully sent message", response);
+            console.log(response.results[0].error);
         })
         .catch(error =>
+
         {
-            console.log("Error sending message", error);
-            console.log(token);
+            
             console.log(body);
+            console.log(androidNotificationToken);
+            console.log("Error sending message", error);
+           
         })
 
     }

@@ -37,8 +37,10 @@ class CommentDeleteEvent extends CommentEvent {
 
 class CommentUpdateEvent extends CommentEvent {
   final String comment;
+  final String id;
+  final String commentId;
 
-  CommentUpdateEvent({this.comment});
+  CommentUpdateEvent({this.comment,this.id,this.commentId});
 
   
 }

@@ -68,7 +68,7 @@ class CommentRepository {
     return commentList;
   }
 
-  Future<void> updateComment(String comment, String id) async {
+  Future<void> updateComment(String comment, String id ,String commentId) async {
     await commentsRef
         .document(id)
         .collection("comments")

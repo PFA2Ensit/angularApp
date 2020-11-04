@@ -372,6 +372,7 @@ class _ArticleFormState extends State<ArticleForm>
                                 height: 130.0,
                                 width: 370.0,
                                 child: InputTags(
+                                  color: kColorBlack,
                                   tags: _tags,
                                   onDelete: (tag) {
                                     print(tag);

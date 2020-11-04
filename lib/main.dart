@@ -16,6 +16,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   setupLocator();
+  //firebaseFirestore.instance.settings(timestampsInSnapshotsEnabled:true);
   runApp(MyApp());
 }
 
