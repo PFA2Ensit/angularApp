@@ -27,6 +27,12 @@ class CreateFailed extends CompteState{
   CreateFailed({this.error});
 }
 
+class AccountExist extends CompteState{
+
+  final String message;
+ AccountExist({this.message});
+}
+
 class ProfileLoadingState extends CompteState {
   @override
   List<Object> get props => [];

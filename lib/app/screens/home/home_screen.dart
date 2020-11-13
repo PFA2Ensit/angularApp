@@ -1,7 +1,13 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:comptabli_blog/app/screens/article_screen/widgets/appBar.dart';
+import 'package:comptabli_blog/app/modules/compte/bloc/compte_state.dart';
+
+import 'package:comptabli_blog/app/modules/compte/bloc/compte_bloc.dart';
+import 'package:comptabli_blog/app/modules/compte/data/repository/compte_repository.dart';
+import 'package:comptabli_blog/app/screens/compte_screen/compte.dart';
+import 'package:comptabli_blog/app/screens/home.dart';
+import 'package:comptabli_blog/app/screens/home/widget/appbar.dart';
 import 'package:comptabli_blog/app/screens/home/widget/declarations.dart';
 import 'package:comptabli_blog/app/screens/home/widget/numbers.dart';
 import 'package:comptabli_blog/app/themes/constants.dart';
@@ -10,6 +16,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sliver_fill_remaining_box_adapter/sliver_fill_remaining_box_adapter.dart';
 
 import '../../../app_routes.dart';
@@ -38,9 +45,21 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
  bool isClicked = false;
+ bool isCreated;
  final scaffoldKey = GlobalKey<ScaffoldState>();
 
+ Future<bool> hasUserCreateAccount() async {
+    FirebaseUser user = await _auth.currentUser();
+     DocumentSnapshot documentSnapshot = await usersReference.document(user.uid).get();
 
+   if(documentSnapshot.exists){
+     return true;
+     
+   }
+
+   return false;
+
+ }
  configureRealTimePushNotifications() async{
    FirebaseUser user = await _auth.currentUser();
    if(Platform.isIOS){
@@ -61,14 +80,14 @@ class _HomeScreenState extends State<HomeScreen> {
        final String body = message["notification"]["body"];
         
               
-       if(recipientId == user.uid){
+       //if(recipientId == user.uid){
          print("id = "+recipientId);
           setState((){
          notificationCount++;
        });
        SnackBar snackBar = SnackBar(content: Text(body));
        scaffoldKey.currentState.showSnackBar(snackBar);
-       }
+      // }
 
      },
    );
@@ -79,12 +98,16 @@ class _HomeScreenState extends State<HomeScreen> {
  void initState() {
    super.initState();
    notificationCount = 0;
-   //configureRealTimePushNotifications() ;
+   configureRealTimePushNotifications() ;
  }
 
 
   @override
   Widget build(BuildContext context) {
+  hasUserCreateAccount().then((value) { setState(() {isCreated = value;
+    
+  }); });
+  //print("created"+isCreated.toString());
     Translations translation = Translations.of(context);
     return Scaffold(
       key: scaffoldKey,
@@ -131,7 +154,10 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: new Row(
+          child:
+          
+          
+           new Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -146,16 +172,22 @@ class _HomeScreenState extends State<HomeScreen> {
               IconButton(
                 icon: Icon(Icons.people),
                 onPressed: () {
-                  
-                 /* Navigator.push(
+
+                  if(isCreated){
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ButtomNavigation(),
+                  ));}
+                  else{
+                  Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => CompteForm()),
-                  );*/
+                  );}
                 },
               ),
               IconButton(
                 icon: Icon(Icons.receipt),
-                onPressed: () {         Navigator.of(context).pushNamed(kArticleRoute);
+                onPressed: () { Navigator.of(context).pushNamed(kArticleRoute);
 },
               ),
             ],

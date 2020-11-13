@@ -9,6 +9,7 @@ import 'app/screens/auth/forgetPassword/forget_password_screen.dart';
 import 'app/screens/auth/login/login_screen.dart';
 import 'app/screens/auth/signup/signup_screen.dart';
 import 'app/screens/compte_screen/compte.dart';
+import 'app/screens/compte_screen/interests_screen.dart';
 import 'app/screens/home.dart';
 import 'app/screens/splash/splash_screen.dart';
 import 'app/screens/tuto/tutorial_screen.dart';
@@ -52,6 +53,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => ButtomNavigation());
       case '/notifications' :
         return MaterialPageRoute(builder: (_) => NotificationsPage());
+      case '/interests' :
+        return MaterialPageRoute(builder: (_) => InterestsPage());
 
       default:
         return MaterialPageRoute(

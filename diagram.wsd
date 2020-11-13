@@ -1,0 +1,1853 @@
+@startuml
+set namespaceSeparator ::
+
+class "comptabli_blog::app::modules::auth::bloc::auth_bloc.dart::AuthenticationBloc" {
+  +UserRepository userRepository
+  +AuthenticationState initialState
+  +Stream mapEventToState()
+}
+
+"comptabli_blog::app::modules::auth::bloc::auth_bloc.dart::AuthenticationBloc" o-- "comptabli_blog::app::modules::auth::data::repository::user_repository.dart::UserRepository"
+"comptabli_blog::app::modules::auth::bloc::auth_bloc.dart::AuthenticationBloc" o-- "comptabli_blog::app::modules::auth::bloc::auth_state.dart::AuthenticationState"
+"bloc::src::bloc.dart::Bloc<Event, State>" <|-- "comptabli_blog::app::modules::auth::bloc::auth_bloc.dart::AuthenticationBloc"
+
+abstract class "comptabli_blog::app::modules::auth::bloc::auth_event.dart::AuthenticationEvent" {
+  +List<Object> props
+}
+
+"equatable::src::equatable.dart::Equatable" <|-- "comptabli_blog::app::modules::auth::bloc::auth_event.dart::AuthenticationEvent"
+
+class "comptabli_blog::app::modules::auth::bloc::auth_event.dart::AppStarted" {
+}
+
+"comptabli_blog::app::modules::auth::bloc::auth_event.dart::AuthenticationEvent" <|-- "comptabli_blog::app::modules::auth::bloc::auth_event.dart::AppStarted"
+
+class "comptabli_blog::app::modules::auth::bloc::auth_event.dart::LogIn" {
+  +String email
+  +String password
+  +List<Object> props
+  +String toString()
+}
+
+"comptabli_blog::app::modules::auth::bloc::auth_event.dart::AuthenticationEvent" <|-- "comptabli_blog::app::modules::auth::bloc::auth_event.dart::LogIn"
+
+class "comptabli_blog::app::modules::auth::bloc::auth_event.dart::SignUp" {
+  +String email
+  +String password
+  +List<Object> props
+  +String toString()
+}
+
+"comptabli_blog::app::modules::auth::bloc::auth_event.dart::AuthenticationEvent" <|-- "comptabli_blog::app::modules::auth::bloc::auth_event.dart::SignUp"
+
+class "comptabli_blog::app::modules::auth::bloc::auth_event.dart::LogOut" {
+}
+
+"comptabli_blog::app::modules::auth::bloc::auth_event.dart::AuthenticationEvent" <|-- "comptabli_blog::app::modules::auth::bloc::auth_event.dart::LogOut"
+
+abstract class "comptabli_blog::app::modules::auth::bloc::auth_state.dart::AuthenticationState" {
+  +List<Object> props
+}
+
+"equatable::src::equatable.dart::Equatable" <|-- "comptabli_blog::app::modules::auth::bloc::auth_state.dart::AuthenticationState"
+
+class "comptabli_blog::app::modules::auth::bloc::auth_state.dart::AuthenticationUninitialized" {
+}
+
+"comptabli_blog::app::modules::auth::bloc::auth_state.dart::AuthenticationState" <|-- "comptabli_blog::app::modules::auth::bloc::auth_state.dart::AuthenticationUninitialized"
+
+class "comptabli_blog::app::modules::auth::bloc::auth_state.dart::Authenticated" {
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::auth::bloc::auth_state.dart::AuthenticationState" <|-- "comptabli_blog::app::modules::auth::bloc::auth_state.dart::Authenticated"
+
+class "comptabli_blog::app::modules::auth::bloc::auth_state.dart::LoginFailed" {
+  +PlatformException error
+  +List<Object> props
+  +String toString()
+}
+
+"comptabli_blog::app::modules::auth::bloc::auth_state.dart::LoginFailed" o-- "flutter::src::services::message_codec.dart::PlatformException"
+"comptabli_blog::app::modules::auth::bloc::auth_state.dart::AuthenticationState" <|-- "comptabli_blog::app::modules::auth::bloc::auth_state.dart::LoginFailed"
+
+class "comptabli_blog::app::modules::auth::bloc::auth_state.dart::SignUpFailed" {
+  +PlatformException error
+  +List<Object> props
+  +String toString()
+}
+
+"comptabli_blog::app::modules::auth::bloc::auth_state.dart::SignUpFailed" o-- "flutter::src::services::message_codec.dart::PlatformException"
+"comptabli_blog::app::modules::auth::bloc::auth_state.dart::AuthenticationState" <|-- "comptabli_blog::app::modules::auth::bloc::auth_state.dart::SignUpFailed"
+
+class "comptabli_blog::app::modules::auth::bloc::auth_state.dart::Unauthenticated" {
+}
+
+"comptabli_blog::app::modules::auth::bloc::auth_state.dart::AuthenticationState" <|-- "comptabli_blog::app::modules::auth::bloc::auth_state.dart::Unauthenticated"
+
+class "comptabli_blog::app::modules::auth::bloc::auth_state.dart::AuthenticationLoading" {
+}
+
+"comptabli_blog::app::modules::auth::bloc::auth_state.dart::AuthenticationState" <|-- "comptabli_blog::app::modules::auth::bloc::auth_state.dart::AuthenticationLoading"
+
+class "comptabli_blog::app::modules::auth::data::model::profile.dart::Profile" {
+  +String id
+  +String email
+  +String companyName
+  +bool isOnboard
+  +String companyLogo
+  +int createdAt
+  +Map toJson()
+}
+
+class "comptabli_blog::app::modules::auth::data::repository::providers::auth_api_providers.dart::AuthApiProvider" {
+  -FirebaseAuth _auth
+  -Firestore _firestore
+  +Future createUserWithEmailAndPassword()
+  +Future createProfile()
+  +Future signInWithEmailAndPassword()
+}
+
+"comptabli_blog::app::modules::auth::data::repository::providers::auth_api_providers.dart::AuthApiProvider" o-- "firebase_auth::firebase_auth.dart::FirebaseAuth"
+"comptabli_blog::app::modules::auth::data::repository::providers::auth_api_providers.dart::AuthApiProvider" o-- "cloud_firestore::cloud_firestore.dart::Firestore"
+
+class "comptabli_blog::app::modules::auth::data::repository::providers::auth_cache_providers.dart::AuthCacheProvider" {
+}
+
+class "comptabli_blog::app::modules::auth::data::repository::user_repository.dart::UserRepository" {
+  -FirebaseAuth _auth
+  -AuthApiProvider _api
+  -FirebaseMessaging _firebaseMessaging
+  +Future sigUpWithEmail()
+  +Future signInWithEmail()
+  +Future createProfile()
+  +Future hasUserLoggedIn()
+}
+
+"comptabli_blog::app::modules::auth::data::repository::user_repository.dart::UserRepository" o-- "firebase_auth::firebase_auth.dart::FirebaseAuth"
+"comptabli_blog::app::modules::auth::data::repository::user_repository.dart::UserRepository" o-- "comptabli_blog::app::modules::auth::data::repository::providers::auth_api_providers.dart::AuthApiProvider"
+"comptabli_blog::app::modules::auth::data::repository::user_repository.dart::UserRepository" o-- "firebase_messaging::firebase_messaging.dart::FirebaseMessaging"
+
+class "comptabli_blog::app::modules::blog::bloc::blog_bloc.dart::BlogBloc" {
+  +PostRepository repository
+  +BlogState initialState
+  +Stream mapEventToState()
+}
+
+"comptabli_blog::app::modules::blog::bloc::blog_bloc.dart::BlogBloc" o-- "comptabli_blog::app::modules::blog::data::repository::post_repository.dart::PostRepository"
+"comptabli_blog::app::modules::blog::bloc::blog_bloc.dart::BlogBloc" o-- "comptabli_blog::app::modules::blog::bloc::blog_state.dart::BlogState"
+"bloc::src::bloc.dart::Bloc<Event, State>" <|-- "comptabli_blog::app::modules::blog::bloc::blog_bloc.dart::BlogBloc"
+
+abstract class "comptabli_blog::app::modules::blog::bloc::blog_event.dart::BlogEvent" {
+  +List<Object> props
+}
+
+"equatable::src::equatable.dart::Equatable" <|-- "comptabli_blog::app::modules::blog::bloc::blog_event.dart::BlogEvent"
+
+class "comptabli_blog::app::modules::blog::bloc::blog_event.dart::AddPost" {
+  +Item item
+}
+
+"comptabli_blog::app::modules::blog::bloc::blog_event.dart::AddPost" o-- "comptabli_blog::app::modules::blog::data::model::Item.dart::Item"
+"comptabli_blog::app::modules::blog::bloc::blog_event.dart::BlogEvent" <|-- "comptabli_blog::app::modules::blog::bloc::blog_event.dart::AddPost"
+
+class "comptabli_blog::app::modules::blog::bloc::blog_event.dart::FetchArticles" {
+  +String filter
+}
+
+"comptabli_blog::app::modules::blog::bloc::blog_event.dart::BlogEvent" <|-- "comptabli_blog::app::modules::blog::bloc::blog_event.dart::FetchArticles"
+
+class "comptabli_blog::app::modules::blog::bloc::blog_event.dart::LikePost" {
+  +dynamic likes
+  +int likeCount
+  +String postId
+}
+
+"comptabli_blog::app::modules::blog::bloc::blog_event.dart::BlogEvent" <|-- "comptabli_blog::app::modules::blog::bloc::blog_event.dart::LikePost"
+
+class "comptabli_blog::app::modules::blog::bloc::blog_event.dart::FetchUserPosts" {
+}
+
+"comptabli_blog::app::modules::blog::bloc::blog_event.dart::BlogEvent" <|-- "comptabli_blog::app::modules::blog::bloc::blog_event.dart::FetchUserPosts"
+
+class "comptabli_blog::app::modules::blog::bloc::blog_event.dart::PostDeleteEvent" {
+  +String id
+}
+
+"comptabli_blog::app::modules::blog::bloc::blog_event.dart::BlogEvent" <|-- "comptabli_blog::app::modules::blog::bloc::blog_event.dart::PostDeleteEvent"
+
+class "comptabli_blog::app::modules::blog::bloc::blog_event.dart::PostSearchEvent" {
+  +String key
+}
+
+"comptabli_blog::app::modules::blog::bloc::blog_event.dart::BlogEvent" <|-- "comptabli_blog::app::modules::blog::bloc::blog_event.dart::PostSearchEvent"
+
+abstract class "comptabli_blog::app::modules::blog::bloc::blog_state.dart::BlogState" {
+  +List<Object> props
+}
+
+"equatable::src::equatable.dart::Equatable" <|-- "comptabli_blog::app::modules::blog::bloc::blog_state.dart::BlogState"
+
+class "comptabli_blog::app::modules::blog::bloc::blog_state.dart::BlogInitial" {
+}
+
+"comptabli_blog::app::modules::blog::bloc::blog_state.dart::BlogState" <|-- "comptabli_blog::app::modules::blog::bloc::blog_state.dart::BlogInitial"
+
+class "comptabli_blog::app::modules::blog::bloc::blog_state.dart::PostSuccess" {
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::blog::bloc::blog_state.dart::BlogState" <|-- "comptabli_blog::app::modules::blog::bloc::blog_state.dart::PostSuccess"
+
+class "comptabli_blog::app::modules::blog::bloc::blog_state.dart::PostFailed" {
+  +PlatformException error
+}
+
+"comptabli_blog::app::modules::blog::bloc::blog_state.dart::PostFailed" o-- "flutter::src::services::message_codec.dart::PlatformException"
+"comptabli_blog::app::modules::blog::bloc::blog_state.dart::BlogState" <|-- "comptabli_blog::app::modules::blog::bloc::blog_state.dart::PostFailed"
+
+class "comptabli_blog::app::modules::blog::bloc::blog_state.dart::PostLoadingState" {
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::blog::bloc::blog_state.dart::BlogState" <|-- "comptabli_blog::app::modules::blog::bloc::blog_state.dart::PostLoadingState"
+
+class "comptabli_blog::app::modules::blog::bloc::blog_state.dart::PostLoadedState" {
+  +List<Item> articles
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::blog::bloc::blog_state.dart::BlogState" <|-- "comptabli_blog::app::modules::blog::bloc::blog_state.dart::PostLoadedState"
+
+class "comptabli_blog::app::modules::blog::bloc::blog_state.dart::PostFetchErrorState" {
+  +dynamic message
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::blog::bloc::blog_state.dart::BlogState" <|-- "comptabli_blog::app::modules::blog::bloc::blog_state.dart::PostFetchErrorState"
+
+class "comptabli_blog::app::modules::blog::bloc::blog_state.dart::PostLikedState" {
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::blog::bloc::blog_state.dart::BlogState" <|-- "comptabli_blog::app::modules::blog::bloc::blog_state.dart::PostLikedState"
+
+class "comptabli_blog::app::modules::blog::bloc::blog_state.dart::ErrorLike" {
+  +dynamic message
+}
+
+"comptabli_blog::app::modules::blog::bloc::blog_state.dart::BlogState" <|-- "comptabli_blog::app::modules::blog::bloc::blog_state.dart::ErrorLike"
+
+class "comptabli_blog::app::modules::blog::bloc::blog_state.dart::DeleteError" {
+  +dynamic message
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::blog::bloc::blog_state.dart::BlogState" <|-- "comptabli_blog::app::modules::blog::bloc::blog_state.dart::DeleteError"
+
+class "comptabli_blog::app::modules::blog::bloc::blog_state.dart::SearchError" {
+  +dynamic message
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::blog::bloc::blog_state.dart::BlogState" <|-- "comptabli_blog::app::modules::blog::bloc::blog_state.dart::SearchError"
+
+class "comptabli_blog::app::modules::blog::bloc::blog_state.dart::PostsEmptyState" {
+}
+
+"comptabli_blog::app::modules::blog::bloc::blog_state.dart::BlogState" <|-- "comptabli_blog::app::modules::blog::bloc::blog_state.dart::PostsEmptyState"
+
+class "comptabli_blog::app::modules::blog::data::model::Item.dart::Item" {
+  +String id
+  +String name
+  +String text
+  +List category
+  +Timestamp timestamp
+  +String username
+  +String position
+  +String imageUrl
+  +String imageWriter
+  +String ownerId
+  +dynamic likes
+  +Map toJson()
+  +int getTotalLikes()
+}
+
+"comptabli_blog::app::modules::blog::data::model::Item.dart::Item" o-- "cloud_firestore_platform_interface::src::timestamp.dart::Timestamp"
+
+class "comptabli_blog::app::modules::blog::data::repository::post_repository.dart::PostRepository" {
+  +CollectionReference usersReference
+  +DateTime timestamp
+  +CollectionReference postsReference
+  -FirebaseAuth _auth
+  +Future addPost()
+  +Future getPosts()
+  +Future getUserPosts()
+  +Future updatePost()
+  +Future deletePost()
+  +Future searchPosts()
+  +dynamic onLikeButtonTapped()
+}
+
+"comptabli_blog::app::modules::blog::data::repository::post_repository.dart::PostRepository" o-- "cloud_firestore::cloud_firestore.dart::CollectionReference"
+"comptabli_blog::app::modules::blog::data::repository::post_repository.dart::PostRepository" o-- "firebase_auth::firebase_auth.dart::FirebaseAuth"
+
+class "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentBloc" {
+  +CommentRepository repository
+  +CommentState initialState
+  +Stream mapEventToState()
+}
+
+"comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentBloc" o-- "comptabli_blog::app::modules::comment::data::repository::comment_repository.dart::CommentRepository"
+"comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentBloc" o-- "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentState"
+"bloc::src::bloc.dart::Bloc<Event, State>" <|-- "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentBloc"
+
+abstract class "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentEvent" {
+  +List<Object> props
+}
+
+"equatable::src::equatable.dart::Equatable" <|-- "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentEvent"
+
+class "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentAddEvent" {
+  +String comment
+  +String postId
+  +String postOwnerId
+  +String url
+}
+
+"comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentEvent" <|-- "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentAddEvent"
+
+class "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::FetchComments" {
+  +String id
+}
+
+"comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentEvent" <|-- "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::FetchComments"
+
+class "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentDeleteEvent" {
+  +String id
+  +String commentId
+}
+
+"comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentEvent" <|-- "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentDeleteEvent"
+
+class "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentUpdateEvent" {
+  +String comment
+  +String id
+  +String commentId
+}
+
+"comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentEvent" <|-- "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentUpdateEvent"
+
+abstract class "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentState" {
+  +List<Object> props
+}
+
+"equatable::src::equatable.dart::Equatable" <|-- "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentState"
+
+class "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentInitial" {
+}
+
+"comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentState" <|-- "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentInitial"
+
+class "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentSuccess" {
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentState" <|-- "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentSuccess"
+
+class "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentFailed" {
+  +PlatformException error
+}
+
+"comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentFailed" o-- "flutter::src::services::message_codec.dart::PlatformException"
+"comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentState" <|-- "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentFailed"
+
+class "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentLoadingState" {
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentState" <|-- "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentLoadingState"
+
+class "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentLoadedState" {
+  +List<Comment> comments
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentState" <|-- "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentLoadedState"
+
+class "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentFetchErrorState" {
+  +String message
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentState" <|-- "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentFetchErrorState"
+
+class "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentDeleteError" {
+  +String message
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentState" <|-- "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentDeleteError"
+
+class "comptabli_blog::app::modules::comment::data::model::comment.dart::Comment" {
+  +String commentId
+  +String comment
+  +String userId
+  +String username
+  +String url
+  +Timestamp timestamp
+  +Map toJson()
+}
+
+"comptabli_blog::app::modules::comment::data::model::comment.dart::Comment" o-- "cloud_firestore_platform_interface::src::timestamp.dart::Timestamp"
+
+class "comptabli_blog::app::modules::comment::data::repository::comment_repository.dart::CommentRepository" {
+  +CollectionReference usersReference
+  +DateTime timestamp
+  +CollectionReference commentsRef
+  -FirebaseAuth _auth
+  +Future addComment()
+  +Future getComments()
+  +Future updateComment()
+  +Future deleteComment()
+}
+
+"comptabli_blog::app::modules::comment::data::repository::comment_repository.dart::CommentRepository" o-- "cloud_firestore::cloud_firestore.dart::CollectionReference"
+"comptabli_blog::app::modules::comment::data::repository::comment_repository.dart::CommentRepository" o-- "firebase_auth::firebase_auth.dart::FirebaseAuth"
+
+class "comptabli_blog::app::modules::compte::bloc::compte_bloc.dart::CompteBloc" {
+  +CompteRepository repository
+  +CompteState initialState
+  +Stream mapEventToState()
+}
+
+"comptabli_blog::app::modules::compte::bloc::compte_bloc.dart::CompteBloc" o-- "comptabli_blog::app::modules::compte::data::repository::compte_repository.dart::CompteRepository"
+"comptabli_blog::app::modules::compte::bloc::compte_bloc.dart::CompteBloc" o-- "comptabli_blog::app::modules::compte::bloc::compte_state.dart::CompteState"
+"bloc::src::bloc.dart::Bloc<Event, State>" <|-- "comptabli_blog::app::modules::compte::bloc::compte_bloc.dart::CompteBloc"
+
+abstract class "comptabli_blog::app::modules::compte::bloc::compte_event.dart::CompteEvent" {
+  +List<Object> props
+}
+
+"equatable::src::equatable.dart::Equatable" <|-- "comptabli_blog::app::modules::compte::bloc::compte_event.dart::CompteEvent"
+
+class "comptabli_blog::app::modules::compte::bloc::compte_event.dart::CreateCompte" {
+  +Compte compte
+}
+
+"comptabli_blog::app::modules::compte::bloc::compte_event.dart::CreateCompte" o-- "comptabli_blog::app::modules::compte::data::model::compte.dart::Compte"
+"comptabli_blog::app::modules::compte::bloc::compte_event.dart::CompteEvent" <|-- "comptabli_blog::app::modules::compte::bloc::compte_event.dart::CreateCompte"
+
+class "comptabli_blog::app::modules::compte::bloc::compte_event.dart::ViewProfileEvent" {
+}
+
+"comptabli_blog::app::modules::compte::bloc::compte_event.dart::CompteEvent" <|-- "comptabli_blog::app::modules::compte::bloc::compte_event.dart::ViewProfileEvent"
+
+class "comptabli_blog::app::modules::compte::bloc::compte_event.dart::UpdateProfileEvent" {
+  +Compte compte
+}
+
+"comptabli_blog::app::modules::compte::bloc::compte_event.dart::UpdateProfileEvent" o-- "comptabli_blog::app::modules::compte::data::model::compte.dart::Compte"
+"comptabli_blog::app::modules::compte::bloc::compte_event.dart::CompteEvent" <|-- "comptabli_blog::app::modules::compte::bloc::compte_event.dart::UpdateProfileEvent"
+
+abstract class "comptabli_blog::app::modules::compte::bloc::compte_state.dart::CompteState" {
+  +List<Object> props
+}
+
+"equatable::src::equatable.dart::Equatable" <|-- "comptabli_blog::app::modules::compte::bloc::compte_state.dart::CompteState"
+
+class "comptabli_blog::app::modules::compte::bloc::compte_state.dart::CompteInitial" {
+}
+
+"comptabli_blog::app::modules::compte::bloc::compte_state.dart::CompteState" <|-- "comptabli_blog::app::modules::compte::bloc::compte_state.dart::CompteInitial"
+
+class "comptabli_blog::app::modules::compte::bloc::compte_state.dart::CreateCompleted" {
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::compte::bloc::compte_state.dart::CompteState" <|-- "comptabli_blog::app::modules::compte::bloc::compte_state.dart::CreateCompleted"
+
+class "comptabli_blog::app::modules::compte::bloc::compte_state.dart::CreateFailed" {
+  +PlatformException error
+}
+
+"comptabli_blog::app::modules::compte::bloc::compte_state.dart::CreateFailed" o-- "flutter::src::services::message_codec.dart::PlatformException"
+"comptabli_blog::app::modules::compte::bloc::compte_state.dart::CompteState" <|-- "comptabli_blog::app::modules::compte::bloc::compte_state.dart::CreateFailed"
+
+class "comptabli_blog::app::modules::compte::bloc::compte_state.dart::AccountExist" {
+  +dynamic message
+}
+
+"comptabli_blog::app::modules::compte::bloc::compte_state.dart::CompteState" <|-- "comptabli_blog::app::modules::compte::bloc::compte_state.dart::AccountExist"
+
+class "comptabli_blog::app::modules::compte::bloc::compte_state.dart::ProfileLoadingState" {
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::compte::bloc::compte_state.dart::CompteState" <|-- "comptabli_blog::app::modules::compte::bloc::compte_state.dart::ProfileLoadingState"
+
+class "comptabli_blog::app::modules::compte::bloc::compte_state.dart::ProfileLoadedState" {
+  +Compte user
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::compte::bloc::compte_state.dart::ProfileLoadedState" o-- "comptabli_blog::app::modules::compte::data::model::compte.dart::Compte"
+"comptabli_blog::app::modules::compte::bloc::compte_state.dart::CompteState" <|-- "comptabli_blog::app::modules::compte::bloc::compte_state.dart::ProfileLoadedState"
+
+class "comptabli_blog::app::modules::compte::bloc::compte_state.dart::ProfileErrorState" {
+  +dynamic message
+}
+
+"comptabli_blog::app::modules::compte::bloc::compte_state.dart::CompteState" <|-- "comptabli_blog::app::modules::compte::bloc::compte_state.dart::ProfileErrorState"
+
+class "comptabli_blog::app::modules::compte::bloc::compte_state.dart::UpdateCompleted" {
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::compte::bloc::compte_state.dart::CompteState" <|-- "comptabli_blog::app::modules::compte::bloc::compte_state.dart::UpdateCompleted"
+
+class "comptabli_blog::app::modules::compte::data::model::compte.dart::Compte" {
+  +String id
+  +String fullname
+  +String position
+  +List expertises
+  +List interests
+  +String photoUrl
+  +Map toJson()
+}
+
+class "comptabli_blog::app::modules::compte::data::repository::compte_repository.dart::CompteRepository" {
+  -FirebaseAuth _auth
+  +CollectionReference usersReference
+  +Future createCompte()
+  +Future getUserInfo()
+  +Future updateCompte()
+}
+
+"comptabli_blog::app::modules::compte::data::repository::compte_repository.dart::CompteRepository" o-- "firebase_auth::firebase_auth.dart::FirebaseAuth"
+"comptabli_blog::app::modules::compte::data::repository::compte_repository.dart::CompteRepository" o-- "cloud_firestore::cloud_firestore.dart::CollectionReference"
+
+class "comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotificationsBloc" {
+  +NotificationsRepository repository
+  +NotificationsState initialState
+  +Stream mapEventToState()
+}
+
+"comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotificationsBloc" o-- "comptabli_blog::app::modules::notifications::data::repository::notif_repository.dart::NotificationsRepository"
+"comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotificationsBloc" o-- "comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotificationsState"
+"bloc::src::bloc.dart::Bloc<Event, State>" <|-- "comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotificationsBloc"
+
+abstract class "comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotificationsEvent" {
+  +List<Object> props
+}
+
+"equatable::src::equatable.dart::Equatable" <|-- "comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotificationsEvent"
+
+class "comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::RetrieveNotifications" {
+}
+
+"comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotificationsEvent" <|-- "comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::RetrieveNotifications"
+
+abstract class "comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotificationsState" {
+  +List<Object> props
+}
+
+"equatable::src::equatable.dart::Equatable" <|-- "comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotificationsState"
+
+class "comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotificationsInitial" {
+}
+
+"comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotificationsState" <|-- "comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotificationsInitial"
+
+class "comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotifLoadingState" {
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotificationsState" <|-- "comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotifLoadingState"
+
+class "comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotifLoadedState" {
+  +List<Notifications> notif
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotificationsState" <|-- "comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotifLoadedState"
+
+class "comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotifFetchErrorState" {
+  +String message
+  +List<Object> props
+}
+
+"comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotificationsState" <|-- "comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotifFetchErrorState"
+
+class "comptabli_blog::app::modules::notifications::data::model::notifications.dart::Notifications" {
+  +String id
+  +String type
+  +String postId
+  +String username
+  +String url
+  +Timestamp timestamp
+  +Map toJson()
+}
+
+"comptabli_blog::app::modules::notifications::data::model::notifications.dart::Notifications" o-- "cloud_firestore_platform_interface::src::timestamp.dart::Timestamp"
+
+class "comptabli_blog::app::modules::notifications::data::repository::notif_repository.dart::NotificationsRepository" {
+  +CollectionReference usersReference
+  +DateTime timestamp
+  +CollectionReference notifsRef
+  -FirebaseAuth _auth
+  +Future getNotifications()
+}
+
+"comptabli_blog::app::modules::notifications::data::repository::notif_repository.dart::NotificationsRepository" o-- "cloud_firestore::cloud_firestore.dart::CollectionReference"
+"comptabli_blog::app::modules::notifications::data::repository::notif_repository.dart::NotificationsRepository" o-- "firebase_auth::firebase_auth.dart::FirebaseAuth"
+
+class "comptabli_blog::app::screens::article_screen::articleList.dart::ArticleScreen" {
+  +ArticleScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::article_screen::articleList.dart::ArticleScreen"
+
+class "comptabli_blog::app::screens::article_screen::articleList.dart::ArticleScreenState" {
+  +BlogBloc articleBloc
+  +dynamic filter
+  +void initState()
+  +Widget build()
+  +Widget buildArticleList()
+  +Widget buildLoading()
+  +Widget buildErrorUi()
+}
+
+"comptabli_blog::app::screens::article_screen::articleList.dart::ArticleScreenState" o-- "comptabli_blog::app::modules::blog::bloc::blog_bloc.dart::BlogBloc"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::article_screen::articleList.dart::ArticleScreenState"
+
+class "comptabli_blog::app::screens::article_screen::article_add.dart::ArticleForm" {
+  +Item item
+  +_ArticleFormState createState()
+}
+
+"comptabli_blog::app::screens::article_screen::article_add.dart::ArticleForm" o-- "comptabli_blog::app::modules::blog::data::model::Item.dart::Item"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::article_screen::article_add.dart::ArticleForm"
+
+class "comptabli_blog::app::screens::article_screen::article_add.dart::_ArticleFormState" {
+  +int count
+  +List chips
+  +bool isClicked
+  +TextEditingController controller
+  -TextEditingController _nameController
+  -GlobalKey<FormState> _formKey
+  -AnimationController _animationController
+  -Animation<double> _formElementAnimation
+  +Item item
+  +double width
+  +double height
+  +Future<File> imageFile
+  -List _tags
+  +dynamic pickImageFromGallery()
+  +Widget showImage()
+  +void initState()
+  +void dispose()
+  +Widget CategorieRow()
+  -dynamic _onCreateButtonPressed()
+  +dynamic addFeed()
+  +Widget build()
+  +Future uploadPhotos()
+}
+
+"comptabli_blog::app::screens::article_screen::article_add.dart::_ArticleFormState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"comptabli_blog::app::screens::article_screen::article_add.dart::_ArticleFormState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"comptabli_blog::app::screens::article_screen::article_add.dart::_ArticleFormState" o-- "flutter::src::animation::animation_controller.dart::AnimationController"
+"comptabli_blog::app::screens::article_screen::article_add.dart::_ArticleFormState" o-- "flutter::src::animation::animation.dart::Animation<double>"
+"comptabli_blog::app::screens::article_screen::article_add.dart::_ArticleFormState" o-- "comptabli_blog::app::modules::blog::data::model::Item.dart::Item"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::article_screen::article_add.dart::_ArticleFormState"
+"flutter::src::widgets::ticker_provider.dart::SingleTickerProviderStateMixin<T>" <|-- "comptabli_blog::app::screens::article_screen::article_add.dart::_ArticleFormState"
+
+class "comptabli_blog::app::screens::article_screen::search.dart::Search" {
+  +PostRepository repository
+  +SearchState createState()
+}
+
+"comptabli_blog::app::screens::article_screen::search.dart::Search" o-- "comptabli_blog::app::modules::blog::data::repository::post_repository.dart::PostRepository"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::article_screen::search.dart::Search"
+
+class "comptabli_blog::app::screens::article_screen::search.dart::SearchState" {
+  +BlogBloc post
+  +void initState()
+  +void didUpdateWidget()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::article_screen::search.dart::SearchState" o-- "comptabli_blog::app::modules::blog::bloc::blog_bloc.dart::BlogBloc"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::article_screen::search.dart::SearchState"
+
+class "comptabli_blog::app::screens::article_screen::searchPage.dart::SearchPage" {
+  +Widget build()
+  +Widget buildPlayersList()
+  +Widget message()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::screens::article_screen::searchPage.dart::SearchPage"
+
+class "comptabli_blog::app::screens::article_screen::widgets::appBar.dart::BlogAppBar" {
+  +Size preferredSize
+  +Item item
+  {static} +dynamic filter
+  +_BlogAppBarState createState()
+}
+
+"comptabli_blog::app::screens::article_screen::widgets::appBar.dart::BlogAppBar" o-- "dart::ui::Size"
+"comptabli_blog::app::screens::article_screen::widgets::appBar.dart::BlogAppBar" o-- "comptabli_blog::app::modules::blog::data::model::Item.dart::Item"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::article_screen::widgets::appBar.dart::BlogAppBar"
+"flutter::src::widgets::preferred_size.dart::PreferredSizeWidget" <|-- "comptabli_blog::app::screens::article_screen::widgets::appBar.dart::BlogAppBar"
+
+class "comptabli_blog::app::screens::article_screen::widgets::appBar.dart::_BlogAppBarState" {
+  +BlogBloc articleBloc
+  -FirebaseAuth _auth
+  +dynamic id
+  +bool isLiked
+  +Future userId()
+  +void initState()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::article_screen::widgets::appBar.dart::_BlogAppBarState" o-- "comptabli_blog::app::modules::blog::bloc::blog_bloc.dart::BlogBloc"
+"comptabli_blog::app::screens::article_screen::widgets::appBar.dart::_BlogAppBarState" o-- "firebase_auth::firebase_auth.dart::FirebaseAuth"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::article_screen::widgets::appBar.dart::_BlogAppBarState"
+
+class "comptabli_blog::app::screens::article_screen::widgets::carousel.dart::CarouselScreen" {
+  +List<Item> itemList
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::screens::article_screen::widgets::carousel.dart::CarouselScreen"
+
+class "comptabli_blog::app::screens::article_screen::widgets::carouselList.dart::CarouselList" {
+  +Item item
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::article_screen::widgets::carouselList.dart::CarouselList" o-- "comptabli_blog::app::modules::blog::data::model::Item.dart::Item"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::screens::article_screen::widgets::carouselList.dart::CarouselList"
+
+class "comptabli_blog::app::screens::article_screen::widgets::customImage.dart::CustomImageDelegate" {
+  +Future<File> imageFile
+  +ImageSource cameraSource
+  +ImageSource gallerySource
+  +Future pickImage()
+  +Widget buildImage()
+}
+
+"comptabli_blog::app::screens::article_screen::widgets::customImage.dart::CustomImageDelegate" o-- "image_picker_platform_interface::src::types::image_source.dart::ImageSource"
+"zefyr::src::widgets::image.dart::ZefyrImageDelegate<S>" <|-- "comptabli_blog::app::screens::article_screen::widgets::customImage.dart::CustomImageDelegate"
+
+class "comptabli_blog::app::screens::article_screen::widgets::custom_chips.dart::InputChipExample" {
+  +_InputChipExampleState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::article_screen::widgets::custom_chips.dart::InputChipExample"
+
+class "comptabli_blog::app::screens::article_screen::widgets::custom_chips.dart::_InputChipExampleState" {
+  -TextEditingController _textEditingController
+  -List _values
+  -List<bool> _selected
+  +void dispose()
+  +Widget buildChips()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::article_screen::widgets::custom_chips.dart::_InputChipExampleState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::article_screen::widgets::custom_chips.dart::_InputChipExampleState"
+
+class "comptabli_blog::app::screens::article_screen::widgets::GridItemDetails.dart::GridItemDetails" {
+  +Item item
+  -dynamic _onShare()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::article_screen::widgets::GridItemDetails.dart::GridItemDetails" o-- "comptabli_blog::app::modules::blog::data::model::Item.dart::Item"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::screens::article_screen::widgets::GridItemDetails.dart::GridItemDetails"
+
+class "comptabli_blog::app::screens::article_screen::widgets::GridItemDetails.dart::GetTags" {
+  +Item item
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::article_screen::widgets::GridItemDetails.dart::GetTags" o-- "comptabli_blog::app::modules::blog::data::model::Item.dart::Item"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::screens::article_screen::widgets::GridItemDetails.dart::GetTags"
+
+class "comptabli_blog::app::screens::article_screen::widgets::GridItemDetails.dart::SetTagsItem" {
+  +dynamic tag
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::screens::article_screen::widgets::GridItemDetails.dart::SetTagsItem"
+
+class "comptabli_blog::app::screens::article_screen::widgets::GridItemDetails.dart::HeaderBanner" {
+  +Item item
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::article_screen::widgets::GridItemDetails.dart::HeaderBanner" o-- "comptabli_blog::app::modules::blog::data::model::Item.dart::Item"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::screens::article_screen::widgets::GridItemDetails.dart::HeaderBanner"
+
+class "comptabli_blog::app::screens::article_screen::widgets::gridScreen.dart::GridScreen" {
+  +List<Item> itemList
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::screens::article_screen::widgets::gridScreen.dart::GridScreen"
+
+class "comptabli_blog::app::screens::article_screen::widgets::ItemList.dart::ItemList" {
+  +Item item
+  +_ItemListState createState()
+}
+
+"comptabli_blog::app::screens::article_screen::widgets::ItemList.dart::ItemList" o-- "comptabli_blog::app::modules::blog::data::model::Item.dart::Item"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::article_screen::widgets::ItemList.dart::ItemList"
+
+class "comptabli_blog::app::screens::article_screen::widgets::ItemList.dart::_ItemListState" {
+  +CollectionReference postsReference
+  +CollectionReference applicationFeedRef
+  +CollectionReference usersReference
+  -FirebaseAuth _auth
+  +DateTime timestamp
+  +int likeCount
+  +Map likes
+  +bool isLiked
+  +dynamic id
+  +dynamic userId()
+  +dynamic addLike()
+  +dynamic removeLike()
+  +dynamic onLikeButtonTapped()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::article_screen::widgets::ItemList.dart::_ItemListState" o-- "cloud_firestore::cloud_firestore.dart::CollectionReference"
+"comptabli_blog::app::screens::article_screen::widgets::ItemList.dart::_ItemListState" o-- "firebase_auth::firebase_auth.dart::FirebaseAuth"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::article_screen::widgets::ItemList.dart::_ItemListState"
+
+class "comptabli_blog::app::screens::article_screen::widgets::searchBar.dart::SearchBar" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::screens::article_screen::widgets::searchBar.dart::SearchBar"
+
+class "comptabli_blog::app::screens::article_screen::widgets::swipeUp.dart::SwipeUpExample" {
+  +Item item
+  +_SwipeUpExampleState createState()
+}
+
+"comptabli_blog::app::screens::article_screen::widgets::swipeUp.dart::SwipeUpExample" o-- "comptabli_blog::app::modules::blog::data::model::Item.dart::Item"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::article_screen::widgets::swipeUp.dart::SwipeUpExample"
+
+class "comptabli_blog::app::screens::article_screen::widgets::swipeUp.dart::_SwipeUpExampleState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::article_screen::widgets::swipeUp.dart::_SwipeUpExampleState"
+
+class "comptabli_blog::app::screens::article_screen::widgets::swipeUp.dart::SecondPage" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::screens::article_screen::widgets::swipeUp.dart::SecondPage"
+
+class "comptabli_blog::app::screens::article_screen::widgets::zefyr.dart::EditorPage" {
+  +Future<File> imageFile
+  +Item item
+  +EditorPageState createState()
+}
+
+"comptabli_blog::app::screens::article_screen::widgets::zefyr.dart::EditorPage" o-- "comptabli_blog::app::modules::blog::data::model::Item.dart::Item"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::article_screen::widgets::zefyr.dart::EditorPage"
+
+class "comptabli_blog::app::screens::article_screen::widgets::zefyr.dart::EditorPageState" {
+  -ZefyrController _controller
+  -TabController _tabController
+  +dynamic text
+  +bool uploading
+  -FocusNode _focusNode
+  +void initState()
+  +Widget showImage()
+  -dynamic _onCreateButtonPressed()
+  +Widget build()
+  -NotusDocument _loadDocument()
+  +Future uploadPhotos()
+}
+
+"comptabli_blog::app::screens::article_screen::widgets::zefyr.dart::EditorPageState" o-- "zefyr::src::widgets::controller.dart::ZefyrController"
+"comptabli_blog::app::screens::article_screen::widgets::zefyr.dart::EditorPageState" o-- "flutter::src::material::tab_controller.dart::TabController"
+"comptabli_blog::app::screens::article_screen::widgets::zefyr.dart::EditorPageState" o-- "flutter::src::widgets::focus_manager.dart::FocusNode"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::article_screen::widgets::zefyr.dart::EditorPageState"
+"flutter::src::widgets::ticker_provider.dart::SingleTickerProviderStateMixin<T>" <|-- "comptabli_blog::app::screens::article_screen::widgets::zefyr.dart::EditorPageState"
+
+class "comptabli_blog::app::screens::auth::forgetPassword::forget_password_screen.dart::ForgetPwScreen" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::screens::auth::forgetPassword::forget_password_screen.dart::ForgetPwScreen"
+
+class "comptabli_blog::app::screens::auth::forgetPassword::widget::forget_password_form.dart::ForgetPwForm" {
+  +_ForgetPwFormState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::auth::forgetPassword::widget::forget_password_form.dart::ForgetPwForm"
+
+class "comptabli_blog::app::screens::auth::forgetPassword::widget::forget_password_form.dart::_ForgetPwFormState" {
+  -TextEditingController _emailController
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::auth::forgetPassword::widget::forget_password_form.dart::_ForgetPwFormState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::auth::forgetPassword::widget::forget_password_form.dart::_ForgetPwFormState"
+
+class "comptabli_blog::app::screens::auth::forgetPassword::widget::sent_password_card.dart::SentPwCard" {
+  +_SentPwCardState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::auth::forgetPassword::widget::sent_password_card.dart::SentPwCard"
+
+class "comptabli_blog::app::screens::auth::forgetPassword::widget::sent_password_card.dart::_SentPwCardState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::auth::forgetPassword::widget::sent_password_card.dart::_SentPwCardState"
+
+class "comptabli_blog::app::screens::auth::login::login_screen.dart::LoginScreen" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::screens::auth::login::login_screen.dart::LoginScreen"
+
+class "comptabli_blog::app::screens::auth::login::widget::login_form.dart::LoginForm" {
+  +_LoginFormState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::auth::login::widget::login_form.dart::LoginForm"
+
+class "comptabli_blog::app::screens::auth::login::widget::login_form.dart::_LoginFormState" {
+  -TextEditingController _emailController
+  -TextEditingController _passwordController
+  -GlobalKey<FormState> _formKey
+  -bool _autoValidateForm
+  -dynamic _onLoginButtonPressed()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::auth::login::widget::login_form.dart::_LoginFormState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"comptabli_blog::app::screens::auth::login::widget::login_form.dart::_LoginFormState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::auth::login::widget::login_form.dart::_LoginFormState"
+
+class "comptabli_blog::app::screens::auth::signup::signup_screen.dart::SignUpScreen" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::screens::auth::signup::signup_screen.dart::SignUpScreen"
+
+class "comptabli_blog::app::screens::auth::signup::widget::signup_form.dart::SignUpForm" {
+  +_SignUpFormState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::auth::signup::widget::signup_form.dart::SignUpForm"
+
+class "comptabli_blog::app::screens::auth::signup::widget::signup_form.dart::_SignUpFormState" {
+  -TextEditingController _emailController
+  -TextEditingController _passwordController
+  -TextEditingController _confirmController
+  -GlobalKey<FormState> _formKey
+  -bool _autoValidateForm
+  -dynamic _onCreateButtonPressed()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::auth::signup::widget::signup_form.dart::_SignUpFormState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"comptabli_blog::app::screens::auth::signup::widget::signup_form.dart::_SignUpFormState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::auth::signup::widget::signup_form.dart::_SignUpFormState"
+
+class "comptabli_blog::app::screens::Comments::commentsPage.dart::CommentsPage" {
+  +dynamic postId
+  +dynamic postOwnerId
+  +dynamic postImage
+  +_CommentsPageState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::Comments::commentsPage.dart::CommentsPage"
+
+class "comptabli_blog::app::screens::Comments::commentsPage.dart::_CommentsPageState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::Comments::commentsPage.dart::_CommentsPageState"
+
+class "comptabli_blog::app::screens::Comments::widgets::commentForm.dart::CommentForm" {
+  +dynamic postId
+  +dynamic postOwnerId
+  +dynamic url
+  +_LoginFormState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::Comments::widgets::commentForm.dart::CommentForm"
+
+class "comptabli_blog::app::screens::Comments::widgets::commentForm.dart::_LoginFormState" {
+  -TextEditingController _commentController
+  +dynamic saveComment()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::Comments::widgets::commentForm.dart::_LoginFormState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::Comments::widgets::commentForm.dart::_LoginFormState"
+
+class "comptabli_blog::app::screens::Comments::widgets::commentsList.dart::CommentList" {
+  +dynamic postId
+  +_CommentFormState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::Comments::widgets::commentsList.dart::CommentList"
+
+class "comptabli_blog::app::screens::Comments::widgets::commentsList.dart::_CommentFormState" {
+  +CommentBloc bloc
+  -TextEditingController _editingController
+  -bool _isEditingText
+  +dynamic isOwner
+  -FirebaseAuth _auth
+  +void initState()
+  +void dispose()
+  +Widget build()
+  +Widget buildCommentsList()
+  +Widget buildLoading()
+  +Widget buildErrorUi()
+}
+
+"comptabli_blog::app::screens::Comments::widgets::commentsList.dart::_CommentFormState" o-- "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentBloc"
+"comptabli_blog::app::screens::Comments::widgets::commentsList.dart::_CommentFormState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"comptabli_blog::app::screens::Comments::widgets::commentsList.dart::_CommentFormState" o-- "firebase_auth::firebase_auth.dart::FirebaseAuth"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::Comments::widgets::commentsList.dart::_CommentFormState"
+
+class "comptabli_blog::app::screens::Comments::widgets::editableText.dart::EditableTextField" {
+  +dynamic comment
+  +dynamic postId
+  +dynamic commentId
+  +_EditableTextFieldState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::Comments::widgets::editableText.dart::EditableTextField"
+
+class "comptabli_blog::app::screens::Comments::widgets::editableText.dart::_EditableTextFieldState" {
+  -bool _isEditingText
+  +CommentBloc bloc
+  -TextEditingController _editingController
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::Comments::widgets::editableText.dart::_EditableTextFieldState" o-- "comptabli_blog::app::modules::comment::bloc::comment_bloc.dart::CommentBloc"
+"comptabli_blog::app::screens::Comments::widgets::editableText.dart::_EditableTextFieldState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::Comments::widgets::editableText.dart::_EditableTextFieldState"
+
+class "comptabli_blog::app::screens::compte_screen::compte.dart::CompteForm" {
+  +_CompteFormState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::compte_screen::compte.dart::CompteForm"
+
+class "comptabli_blog::app::screens::compte_screen::compte.dart::_CompteFormState" {
+  +int count
+  +List chips
+  +TextEditingController controller
+  -TextEditingController _fullnameController
+  -TextEditingController _positionController
+  -GlobalKey<FormState> _formKey
+  -AnimationController _animationController
+  -Animation<double> _formElementAnimation
+  +String name
+  +String position
+  +Compte compte
+  +double width
+  +double height
+  -List _tags
+  +void initState()
+  +void dispose()
+  +Widget ExpertiseRow()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::compte_screen::compte.dart::_CompteFormState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"comptabli_blog::app::screens::compte_screen::compte.dart::_CompteFormState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"comptabli_blog::app::screens::compte_screen::compte.dart::_CompteFormState" o-- "flutter::src::animation::animation_controller.dart::AnimationController"
+"comptabli_blog::app::screens::compte_screen::compte.dart::_CompteFormState" o-- "flutter::src::animation::animation.dart::Animation<double>"
+"comptabli_blog::app::screens::compte_screen::compte.dart::_CompteFormState" o-- "comptabli_blog::app::modules::compte::data::model::compte.dart::Compte"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::compte_screen::compte.dart::_CompteFormState"
+"flutter::src::widgets::ticker_provider.dart::SingleTickerProviderStateMixin<T>" <|-- "comptabli_blog::app::screens::compte_screen::compte.dart::_CompteFormState"
+
+class "comptabli_blog::app::screens::compte_screen::interests_screen.dart::InterestsPage" {
+  +double screenHeight
+  +Compte compte
+  +File profileImage
+  +_InterestsPageState createState()
+}
+
+"comptabli_blog::app::screens::compte_screen::interests_screen.dart::InterestsPage" o-- "comptabli_blog::app::modules::compte::data::model::compte.dart::Compte"
+"comptabli_blog::app::screens::compte_screen::interests_screen.dart::InterestsPage" o-- "dart::io::File"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::compte_screen::interests_screen.dart::InterestsPage"
+
+class "comptabli_blog::app::screens::compte_screen::interests_screen.dart::_InterestsPageState" {
+  +List<Choice> choices
+  -dynamic _onCreateButtonPressed()
+  -Future _showMyDialog()
+  +Widget build()
+  +Future uploadPhotos()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::compte_screen::interests_screen.dart::_InterestsPageState"
+
+class "comptabli_blog::app::screens::compte_screen::widgets::chips.dart::ChipsField" {
+  +_ChipsFieldState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::compte_screen::widgets::chips.dart::ChipsField"
+
+class "comptabli_blog::app::screens::compte_screen::widgets::chips.dart::_ChipsFieldState" {
+  +int count
+  +bool isClicked
+  +TextEditingController controller
+  +void initState()
+  +void dispose()
+  +Widget ContactRow()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::compte_screen::widgets::chips.dart::_ChipsFieldState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::compte_screen::widgets::chips.dart::_ChipsFieldState"
+
+class "comptabli_blog::app::screens::compte_screen::widgets::choice.dart::Choice" {
+  +IconData iconData
+  +dynamic text
+}
+
+"comptabli_blog::app::screens::compte_screen::widgets::choice.dart::Choice" o-- "flutter::src::widgets::icon_data.dart::IconData"
+
+class "comptabli_blog::app::screens::compte_screen::widgets::custom_chips.dart::InputChipExample" {
+  +_InputChipExampleState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::compte_screen::widgets::custom_chips.dart::InputChipExample"
+
+class "comptabli_blog::app::screens::compte_screen::widgets::custom_chips.dart::_InputChipExampleState" {
+  -TextEditingController _textEditingController
+  -List _values
+  -List<bool> _selected
+  +void dispose()
+  +Widget buildChips()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::compte_screen::widgets::custom_chips.dart::_InputChipExampleState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::compte_screen::widgets::custom_chips.dart::_InputChipExampleState"
+
+class "comptabli_blog::app::screens::compte_screen::widgets::item.dart::GridViewItem" {
+  +Choice choice
+  {static} +List selectedIcons
+  +Color iconColor
+  +Color fill
+  +_GridViewItemState createState()
+}
+
+"comptabli_blog::app::screens::compte_screen::widgets::item.dart::GridViewItem" o-- "comptabli_blog::app::screens::compte_screen::widgets::choice.dart::Choice"
+"comptabli_blog::app::screens::compte_screen::widgets::item.dart::GridViewItem" o-- "dart::ui::Color"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::compte_screen::widgets::item.dart::GridViewItem"
+
+class "comptabli_blog::app::screens::compte_screen::widgets::item.dart::_GridViewItemState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::compte_screen::widgets::item.dart::_GridViewItemState"
+
+class "comptabli_blog::app::screens::home::home_screen.dart::HomeScreen" {
+  +_HomeScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::home::home_screen.dart::HomeScreen"
+
+class "comptabli_blog::app::screens::home::home_screen.dart::_HomeScreenState" {
+  +bool isClicked
+  +bool isCreated
+  +GlobalKey<ScaffoldState> scaffoldKey
+  +Future hasUserCreateAccount()
+  +dynamic configureRealTimePushNotifications()
+  +void initState()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::home::home_screen.dart::_HomeScreenState" o-- "flutter::src::widgets::framework.dart::GlobalKey<ScaffoldState>"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::home::home_screen.dart::_HomeScreenState"
+
+class "comptabli_blog::app::screens::home::widget::appbar.dart::ComptaAppBar" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::screens::home::widget::appbar.dart::ComptaAppBar"
+
+class "comptabli_blog::app::screens::home::widget::declarations.dart::DeclarationsWidget" {
+  +Translations translation
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::home::widget::declarations.dart::DeclarationsWidget" o-- "comptabli_blog::core::i18n::translations.dart::Translations"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::screens::home::widget::declarations.dart::DeclarationsWidget"
+
+class "comptabli_blog::app::screens::home::widget::numbers.dart::Numbers" {
+  +Translations translation
+  +_NumbersState createState()
+}
+
+"comptabli_blog::app::screens::home::widget::numbers.dart::Numbers" o-- "comptabli_blog::core::i18n::translations.dart::Translations"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::home::widget::numbers.dart::Numbers"
+
+class "comptabli_blog::app::screens::home::widget::numbers.dart::_NumbersState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::home::widget::numbers.dart::_NumbersState"
+
+class "comptabli_blog::app::screens::home.dart::ButtomNavigation" {
+  +ButtomNavigationState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::home.dart::ButtomNavigation"
+
+class "comptabli_blog::app::screens::home.dart::ButtomNavigationState" {
+  +PageController pageController
+  +int getPageIndex
+  +GlobalKey<ScaffoldState> scaffoldKey
+  +void initState()
+  +void dispose()
+  +dynamic whenPageChanges()
+  +dynamic onTapPageChange()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::home.dart::ButtomNavigationState" o-- "flutter::src::widgets::page_view.dart::PageController"
+"comptabli_blog::app::screens::home.dart::ButtomNavigationState" o-- "flutter::src::widgets::framework.dart::GlobalKey<ScaffoldState>"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::home.dart::ButtomNavigationState"
+
+class "comptabli_blog::app::screens::messagingDemo.dart::MessagingDemo" {
+  +_MessagingDemoState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::messagingDemo.dart::MessagingDemo"
+
+class "comptabli_blog::app::screens::messagingDemo.dart::_MessagingDemoState" {
+  -FirebaseMessaging _firebaseMessaging
+  -TextEditingController _editingController
+  -bool _isEnabled
+  -dynamic _getToken()
+  +void initState()
+  -dynamic _configureFirebaseListeners()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::messagingDemo.dart::_MessagingDemoState" o-- "firebase_messaging::firebase_messaging.dart::FirebaseMessaging"
+"comptabli_blog::app::screens::messagingDemo.dart::_MessagingDemoState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::messagingDemo.dart::_MessagingDemoState"
+
+class "comptabli_blog::app::screens::messagingDemo.dart::_editTitleTextField" {
+  -bool _isEnabled
+  -TextEditingController _editingController
+  +__editTitleTextFieldState createState()
+}
+
+"comptabli_blog::app::screens::messagingDemo.dart::_editTitleTextField" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::messagingDemo.dart::_editTitleTextField"
+
+class "comptabli_blog::app::screens::messagingDemo.dart::__editTitleTextFieldState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::messagingDemo.dart::__editTitleTextFieldState"
+
+class "comptabli_blog::app::screens::notifications::notificationsScreen.dart::NotificationsPage" {
+  +dynamic postId
+  +dynamic postOwnerId
+  +dynamic postImage
+  +_NotificationsPageState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::notifications::notificationsScreen.dart::NotificationsPage"
+
+class "comptabli_blog::app::screens::notifications::notificationsScreen.dart::_NotificationsPageState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::notifications::notificationsScreen.dart::_NotificationsPageState"
+
+class "comptabli_blog::app::screens::notifications::widgets::notificationItem.dart::NotifItem" {
+  +dynamic postId
+  +_NotifItemtate createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::notifications::widgets::notificationItem.dart::NotifItem"
+
+class "comptabli_blog::app::screens::notifications::widgets::notificationItem.dart::_NotifItemtate" {
+  +NotificationsBloc bloc
+  +dynamic notificationItemText
+  +Widget media
+  +void initState()
+  +Widget build()
+  +Widget buildCommentsList()
+  +Widget buildLoading()
+  +Widget buildErrorUi()
+}
+
+"comptabli_blog::app::screens::notifications::widgets::notificationItem.dart::_NotifItemtate" o-- "comptabli_blog::app::modules::notifications::bloc::notifications_bloc.dart::NotificationsBloc"
+"comptabli_blog::app::screens::notifications::widgets::notificationItem.dart::_NotifItemtate" o-- "flutter::src::widgets::framework.dart::Widget"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::notifications::widgets::notificationItem.dart::_NotifItemtate"
+
+class "comptabli_blog::app::screens::profile::editProfileScreen.dart::EditProfilePage" {
+  +Compte compte
+  +_CompteFormState createState()
+}
+
+"comptabli_blog::app::screens::profile::editProfileScreen.dart::EditProfilePage" o-- "comptabli_blog::app::modules::compte::data::model::compte.dart::Compte"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::profile::editProfileScreen.dart::EditProfilePage"
+
+class "comptabli_blog::app::screens::profile::editProfileScreen.dart::_CompteFormState" {
+  +int count
+  -List _tags
+  +File profileImage
+  +TextEditingController controller
+  -TextEditingController _fullnameController
+  -TextEditingController _positionController
+  -GlobalKey<FormState> _formKey
+  -AnimationController _animationController
+  -Animation<double> _formElementAnimation
+  +String name
+  +String position
+  +Compte compte
+  +double width
+  +double height
+  +void initState()
+  +void dispose()
+  +Future pickImageFromGallery()
+  -Widget _buildProfileImage()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::profile::editProfileScreen.dart::_CompteFormState" o-- "dart::io::File"
+"comptabli_blog::app::screens::profile::editProfileScreen.dart::_CompteFormState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"comptabli_blog::app::screens::profile::editProfileScreen.dart::_CompteFormState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"comptabli_blog::app::screens::profile::editProfileScreen.dart::_CompteFormState" o-- "flutter::src::animation::animation_controller.dart::AnimationController"
+"comptabli_blog::app::screens::profile::editProfileScreen.dart::_CompteFormState" o-- "flutter::src::animation::animation.dart::Animation<double>"
+"comptabli_blog::app::screens::profile::editProfileScreen.dart::_CompteFormState" o-- "comptabli_blog::app::modules::compte::data::model::compte.dart::Compte"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::profile::editProfileScreen.dart::_CompteFormState"
+"flutter::src::widgets::ticker_provider.dart::SingleTickerProviderStateMixin<T>" <|-- "comptabli_blog::app::screens::profile::editProfileScreen.dart::_CompteFormState"
+
+class "comptabli_blog::app::screens::profile::profileScreen.dart::ProfileScreen" {
+  +ProfileScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::profile::profileScreen.dart::ProfileScreen"
+
+class "comptabli_blog::app::screens::profile::profileScreen.dart::ProfileScreenState" {
+  +File profileImage
+  +CompteRepository repository
+  -FirebaseAuth _auth
+  +dynamic userId()
+  +Future pickImageFromGallery()
+  -Widget _buildProfileImage()
+  +Widget build()
+  +void action()
+}
+
+"comptabli_blog::app::screens::profile::profileScreen.dart::ProfileScreenState" o-- "dart::io::File"
+"comptabli_blog::app::screens::profile::profileScreen.dart::ProfileScreenState" o-- "comptabli_blog::app::modules::compte::data::repository::compte_repository.dart::CompteRepository"
+"comptabli_blog::app::screens::profile::profileScreen.dart::ProfileScreenState" o-- "firebase_auth::firebase_auth.dart::FirebaseAuth"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::profile::profileScreen.dart::ProfileScreenState"
+
+class "comptabli_blog::app::screens::profile::widgets::userInfo.dart::UserInformation" {
+  +_UserInformationState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::profile::widgets::userInfo.dart::UserInformation"
+
+class "comptabli_blog::app::screens::profile::widgets::userInfo.dart::_UserInformationState" {
+  +CompteBloc bloc
+  -FirebaseAuth _auth
+  +void initState()
+  +Widget build()
+  +Widget buildUserInfoList()
+  +Widget buildLoading()
+  +Widget buildErrorUi()
+}
+
+"comptabli_blog::app::screens::profile::widgets::userInfo.dart::_UserInformationState" o-- "comptabli_blog::app::modules::compte::bloc::compte_bloc.dart::CompteBloc"
+"comptabli_blog::app::screens::profile::widgets::userInfo.dart::_UserInformationState" o-- "firebase_auth::firebase_auth.dart::FirebaseAuth"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::profile::widgets::userInfo.dart::_UserInformationState"
+
+class "comptabli_blog::app::screens::profile::widgets::userInfo.dart::GetTags" {
+  +Compte item
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::profile::widgets::userInfo.dart::GetTags" o-- "comptabli_blog::app::modules::compte::data::model::compte.dart::Compte"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::screens::profile::widgets::userInfo.dart::GetTags"
+
+class "comptabli_blog::app::screens::profile::widgets::userInfo.dart::SetTagsItem" {
+  +dynamic tag
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::screens::profile::widgets::userInfo.dart::SetTagsItem"
+
+class "comptabli_blog::app::screens::profile::widgets::userPosts.dart::UserPosts" {
+  +_UserPostsState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::profile::widgets::userPosts.dart::UserPosts"
+
+class "comptabli_blog::app::screens::profile::widgets::userPosts.dart::_UserPostsState" {
+  +BlogBloc bloc
+  +void initState()
+  +Widget build()
+  +Widget buildCommentsList()
+  +Widget buildLoading()
+  +Widget buildErrorUi()
+}
+
+"comptabli_blog::app::screens::profile::widgets::userPosts.dart::_UserPostsState" o-- "comptabli_blog::app::modules::blog::bloc::blog_bloc.dart::BlogBloc"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::profile::widgets::userPosts.dart::_UserPostsState"
+
+class "comptabli_blog::app::screens::scanning::confirmHelper.dart::WordBox" {
+  +String text
+  +List<List<num>> vertices
+  +List<List<num>> boundingBox
+  +num lineNum
+  +List match
+  +bool matched
+  +dynamic setBox()
+  +dynamic pushMatch()
+  +dynamic setlineNum()
+  +dynamic setMatched()
+}
+
+class "comptabli_blog::app::screens::scanning::confirmHelper.dart::Item" {
+  +String name
+  +num totalCost
+  +num unitCost
+  +int quantity
+}
+
+class "comptabli_blog::app::screens::scanning::confirmHelper.dart::ReceiptInfo" {
+  +List items
+  +num finalTotal
+  +num finalTax
+}
+
+class "comptabli_blog::app::screens::scanning::confirmHelper.dart::ConfirmHelper" {
+  {static} +num findSubtotal()
+  {static} +dynamic getItems()
+  {static} +dynamic getText()
+  {static} +dynamic constructLineWithBoundingPolygon()
+  {static} +String arrangeWordsInOrder()
+  {static} +dynamic getBoundingPolygon()
+  {static} +dynamic combineBoundingPolygon()
+  {static} +List getLineMesh()
+}
+
+class "comptabli_blog::app::screens::scanning::confirm_scan_screen.dart::Item" {
+  +dynamic name
+  +num totalCost
+  +num unitCost
+  +int quantity
+}
+
+class "comptabli_blog::app::screens::scanning::confirm_scan_screen.dart::ReceiptInfo" {
+  +List items
+  +num finalTotal
+  +num finalTax
+}
+
+class "comptabli_blog::app::screens::scanning::confirm_scan_screen.dart::ScanConfirm" {
+  +File imageFile
+  +_ScanConfirmState createState()
+}
+
+"comptabli_blog::app::screens::scanning::confirm_scan_screen.dart::ScanConfirm" o-- "dart::io::File"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::scanning::confirm_scan_screen.dart::ScanConfirm"
+
+class "comptabli_blog::app::screens::scanning::confirm_scan_screen.dart::_ScanConfirmState" {
+  +dynamic receiptInfo
+  +VisionText visionText
+  +bool receiptReady
+  +void initState()
+  +Future getReceiptInfo()
+  -void _initializeVision()
+  +dynamic getPrettyJSONString()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::scanning::confirm_scan_screen.dart::_ScanConfirmState" o-- "firebase_ml_vision::firebase_ml_vision.dart::VisionText"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::scanning::confirm_scan_screen.dart::_ScanConfirmState"
+
+class "comptabli_blog::app::screens::scanning::detail.dart::DetailScreen" {
+  +File image
+  +_DetailScreenState createState()
+}
+
+"comptabli_blog::app::screens::scanning::detail.dart::DetailScreen" o-- "dart::io::File"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::scanning::detail.dart::DetailScreen"
+
+class "comptabli_blog::app::screens::scanning::detail.dart::_DetailScreenState" {
+  +File image
+  -Size _imageSize
+  -List<TextElement> _elements
+  +dynamic recognizedText
+  +dynamic total
+  +dynamic email
+  +dynamic address
+  +dynamic companyName
+  +List finalLines
+  -void _initializeVision()
+  -Future _getImageSize()
+  +void initState()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::scanning::detail.dart::_DetailScreenState" o-- "dart::io::File"
+"comptabli_blog::app::screens::scanning::detail.dart::_DetailScreenState" o-- "dart::ui::Size"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::scanning::detail.dart::_DetailScreenState"
+
+class "comptabli_blog::app::screens::scanning::detail.dart::TextDetectorPainter" {
+  +Size absoluteImageSize
+  +List<TextElement> elements
+  +void paint()
+  +bool shouldRepaint()
+}
+
+"comptabli_blog::app::screens::scanning::detail.dart::TextDetectorPainter" o-- "dart::ui::Size"
+"flutter::src::rendering::custom_paint.dart::CustomPainter" <|-- "comptabli_blog::app::screens::scanning::detail.dart::TextDetectorPainter"
+
+class "comptabli_blog::app::screens::scanning::getItems.dart::GetItems" {
+  {static} +num findTotalHT()
+  {static} +num findTax()
+  {static} +String findMatricule()
+  {static} +String findAddress()
+  {static} +String findEmail()
+  {static} +String findName()
+}
+
+class "comptabli_blog::app::screens::scanning::models::RtItemModel.dart::RtItem" {
+  +String name
+  +num totalCost
+  +num unitCost
+  +int quantity
+  +List<String> userEmails
+  +Map toJson()
+}
+
+class "comptabli_blog::app::screens::scanning::models::RtReceiptModel.dart::RtReceipt" {
+  +List<String> users
+  +String groupID
+  +List items
+  +num total
+  +num tax
+  +dynamic dateCreated
+  +Map toJson()
+  +String getPrettyJSONString()
+}
+
+class "comptabli_blog::app::screens::scanning::scan.dart::MyHomePage" {
+  +_MyHomePageState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::scanning::scan.dart::MyHomePage"
+
+class "comptabli_blog::app::screens::scanning::scan.dart::_MyHomePageState" {
+  +File pickedImage
+  +String text
+  +bool imageLoaded
+  +Future pickImage()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::scanning::scan.dart::_MyHomePageState" o-- "dart::io::File"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::scanning::scan.dart::_MyHomePageState"
+
+class "comptabli_blog::app::screens::scanning::scan_screen.dart::ScanScreen" {
+  +dynamic userEmail
+  +ScanScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::scanning::scan_screen.dart::ScanScreen"
+
+class "comptabli_blog::app::screens::scanning::scan_screen.dart::ScanScreenState" {
+  +File imageFile
+  +Future<File> image
+  -File _image
+  +ImagePicker picker
+  +bool isClicked
+  +bool showCamera
+  +Future getImage()
+  +dynamic pickImageFromGallery()
+  +void initState()
+  +void dispose()
+  +Widget showImage()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::scanning::scan_screen.dart::ScanScreenState" o-- "dart::io::File"
+"comptabli_blog::app::screens::scanning::scan_screen.dart::ScanScreenState" o-- "image_picker::image_picker.dart::ImagePicker"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::scanning::scan_screen.dart::ScanScreenState"
+
+class "comptabli_blog::app::screens::splash::splash_screen.dart::SplashScreen" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::screens::splash::splash_screen.dart::SplashScreen"
+
+class "comptabli_blog::app::screens::tuto::tutorial_screen.dart::TutorialScreen" {
+  +_TutorialScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::screens::tuto::tutorial_screen.dart::TutorialScreen"
+
+class "comptabli_blog::app::screens::tuto::tutorial_screen.dart::_TutorialScreenState" {
+  +List<Map> cardsContentList
+  -int _numPages
+  -PageController _pageController
+  -int _currentPage
+  +void initState()
+  -Widget _indicator()
+  -List _buildPageIndicator()
+  +dynamic navigateToLogin()
+  +Widget build()
+}
+
+"comptabli_blog::app::screens::tuto::tutorial_screen.dart::_TutorialScreenState" o-- "flutter::src::widgets::page_view.dart::PageController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::screens::tuto::tutorial_screen.dart::_TutorialScreenState"
+
+class "comptabli_blog::app::screens::tuto::widgets::tuto_card_widget.dart::TutoCard" {
+  +dynamic title
+  +dynamic body
+  +dynamic picture
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::screens::tuto::widgets::tuto_card_widget.dart::TutoCard"
+
+class "comptabli_blog::app::shared_widgets::bottom_navigation.dart::ButtomNavigation" {
+  +ButtomNavigationState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::shared_widgets::bottom_navigation.dart::ButtomNavigation"
+
+class "comptabli_blog::app::shared_widgets::bottom_navigation.dart::ButtomNavigationState" {
+  +PageController pageController
+  +int getPageIndex
+  +void initState()
+  +void dispose()
+  +dynamic whenPageChanges()
+  +dynamic onTapPageChange()
+  +Widget build()
+}
+
+"comptabli_blog::app::shared_widgets::bottom_navigation.dart::ButtomNavigationState" o-- "flutter::src::widgets::page_view.dart::PageController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::shared_widgets::bottom_navigation.dart::ButtomNavigationState"
+
+class "comptabli_blog::app::shared_widgets::compta_card.dart::ComptaCard" {
+  +Widget child
+  +bool isCut
+  +Color backgournd
+  +double cutSize
+  +Widget build()
+}
+
+"comptabli_blog::app::shared_widgets::compta_card.dart::ComptaCard" o-- "flutter::src::widgets::framework.dart::Widget"
+"comptabli_blog::app::shared_widgets::compta_card.dart::ComptaCard" o-- "dart::ui::Color"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::shared_widgets::compta_card.dart::ComptaCard"
+
+class "comptabli_blog::app::shared_widgets::compta_input.dart::ComptaInput" {
+  +TextEditingController textController
+  +dynamic labelText
+  +TextCapitalization textCapitalization
+  +dynamic customValidationError
+  +Function onInputTap
+  +Function validator
+  +bool isPassword
+  +bool enabled
+  +TextInputType keyboardType
+  +int maxLines
+  +bool floating
+  +dynamic hintText
+  +TextInputAction textInputAction
+  +Icon suffixIcon
+  +Function onIconTap
+  +Function onSubmitted
+  +bool autofocus
+  +_ComptaInputState createState()
+}
+
+"comptabli_blog::app::shared_widgets::compta_input.dart::ComptaInput" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"comptabli_blog::app::shared_widgets::compta_input.dart::ComptaInput" o-- "flutter::src::services::text_input.dart::TextCapitalization"
+"comptabli_blog::app::shared_widgets::compta_input.dart::ComptaInput" o-- "flutter::src::services::text_input.dart::TextInputType"
+"comptabli_blog::app::shared_widgets::compta_input.dart::ComptaInput" o-- "flutter::src::services::text_input.dart::TextInputAction"
+"comptabli_blog::app::shared_widgets::compta_input.dart::ComptaInput" o-- "flutter::src::widgets::icon.dart::Icon"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "comptabli_blog::app::shared_widgets::compta_input.dart::ComptaInput"
+
+class "comptabli_blog::app::shared_widgets::compta_input.dart::_ComptaInputState" {
+  +bool isObscure
+  +dynamic validationError
+  +void initState()
+  +Widget build()
+  -dynamic _buildTogglePasswordBtn()
+  -dynamic _buildToggleIconBtn()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "comptabli_blog::app::shared_widgets::compta_input.dart::_ComptaInputState"
+
+class "comptabli_blog::app::shared_widgets::custom_button.dart::CustomButton" {
+  +Color color
+  +Color textColor
+  +dynamic text
+  +Widget image
+  +void Function() onPressed
+  +Widget build()
+}
+
+"comptabli_blog::app::shared_widgets::custom_button.dart::CustomButton" o-- "dart::ui::Color"
+"comptabli_blog::app::shared_widgets::custom_button.dart::CustomButton" o-- "flutter::src::widgets::framework.dart::Widget"
+"comptabli_blog::app::shared_widgets::custom_button.dart::CustomButton" o-- "dart::ui::void Function()"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::shared_widgets::custom_button.dart::CustomButton"
+
+class "comptabli_blog::app::shared_widgets::custom_input_field.dart::CustomInputField" {
+  +dynamic label
+  +IconData prefixIcon
+  +bool obscureText
+  +TextEditingController textController
+  +Function validator
+  +Function onChanged
+  +Widget build()
+}
+
+"comptabli_blog::app::shared_widgets::custom_input_field.dart::CustomInputField" o-- "flutter::src::widgets::icon_data.dart::IconData"
+"comptabli_blog::app::shared_widgets::custom_input_field.dart::CustomInputField" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::shared_widgets::custom_input_field.dart::CustomInputField"
+
+class "comptabli_blog::app::shared_widgets::fade_slide_transition.dart::FadeSlideTransition" {
+  +Animation<double> animation
+  +double additionalOffset
+  +Widget child
+  +Widget build()
+}
+
+"comptabli_blog::app::shared_widgets::fade_slide_transition.dart::FadeSlideTransition" o-- "flutter::src::animation::animation.dart::Animation<double>"
+"comptabli_blog::app::shared_widgets::fade_slide_transition.dart::FadeSlideTransition" o-- "flutter::src::widgets::framework.dart::Widget"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::shared_widgets::fade_slide_transition.dart::FadeSlideTransition"
+
+class "comptabli_blog::app::shared_widgets::logo.dart::AppLogo" {
+  +bool dark
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::app::shared_widgets::logo.dart::AppLogo"
+
+class "comptabli_blog::app::themes::icons.dart::CustomIcons" {
+  {static} -String _kFontFam
+  {static} +IconData eye
+  {static} +IconData eye_off
+}
+
+"comptabli_blog::app::themes::icons.dart::CustomIcons" o-- "flutter::src::widgets::icon_data.dart::IconData"
+
+class "comptabli_blog::app_routes.dart::Router" {
+  {static} +Route generateRoute()
+}
+
+class "comptabli_blog::core::bloc::simpleBlocDelegate.dart::SimpleBlocDelegate" {
+  +bool isDev
+  +void onError()
+  +void onEvent()
+  +void onTransition()
+  -void _log()
+}
+
+"bloc::src::bloc_delegate.dart::BlocDelegate" <|-- "comptabli_blog::core::bloc::simpleBlocDelegate.dart::SimpleBlocDelegate"
+
+class "comptabli_blog::core::environment::environment.dart::Environment" {
+  +String baseUrl
+  +String appTitle
+}
+
+class "comptabli_blog::core::environment::environment_provider.dart::EnvironmentProvider" {
+  +Environment env
+  +Widget child
+  +Widget build()
+}
+
+"comptabli_blog::core::environment::environment_provider.dart::EnvironmentProvider" o-- "comptabli_blog::core::environment::environment.dart::Environment"
+"comptabli_blog::core::environment::environment_provider.dart::EnvironmentProvider" o-- "flutter::src::widgets::framework.dart::Widget"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::core::environment::environment_provider.dart::EnvironmentProvider"
+
+class "comptabli_blog::core::i18n::translations.dart::Translations" {
+  {static} -Map _localizedValues
+  +Locale locale
+  +dynamic currentLanguage
+  +dynamic text()
+  {static} +Future load()
+  {static} +Translations of()
+}
+
+"comptabli_blog::core::i18n::translations.dart::Translations" o-- "dart::ui::Locale"
+
+class "comptabli_blog::core::i18n::translations_delegate.dart::TranslationsDelegate" {
+  +bool isSupported()
+  +Future load()
+  +bool shouldReload()
+}
+
+"flutter::src::widgets::localizations.dart::LocalizationsDelegate<T>" <|-- "comptabli_blog::core::i18n::translations_delegate.dart::TranslationsDelegate"
+
+class "comptabli_blog::core::utils::validators.dart::ValidatorService" {
+  {static} +String validateEmail()
+  {static} +String samePasswordValidation()
+  {static} +String validatePassword()
+  {static} +String validateUsername()
+  {static} +String fullNameValidate()
+  {static} +String positionValidate()
+  {static} +String articleNameValidate()
+}
+
+class "comptabli_blog::filter_icons.dart::Filter" {
+  {static} -String _kFontFam
+  {static} -dynamic _kFontPkg
+  {static} +IconData sliders_h
+}
+
+"comptabli_blog::filter_icons.dart::Filter" o-- "flutter::src::widgets::icon_data.dart::IconData"
+
+class "comptabli_blog::main.dart::MyApp" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "comptabli_blog::main.dart::MyApp"
+
+class "comptabli_blog::my_icons_icons.dart::MyIcons" {
+  {static} -String _kFontFam
+  {static} +IconData ai
+  {static} +IconData paint
+  {static} +IconData money
+  {static} +IconData food
+  {static} +IconData recycle
+  {static} +IconData map
+  {static} +IconData cup
+  {static} +IconData college_graduation
+  {static} +IconData tractor_icon
+  {static} +IconData finance
+  {static} +IconData e
+  {static} +IconData artificial_intelligence
+  {static} +IconData projektmanagement
+  {static} +IconData health_5fe9bcc602d060755a6375608845b192
+}
+
+"comptabli_blog::my_icons_icons.dart::MyIcons" o-- "flutter::src::widgets::icon_data.dart::IconData"
+
+
+@enduml

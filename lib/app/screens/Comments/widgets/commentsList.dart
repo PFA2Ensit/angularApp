@@ -1,5 +1,6 @@
 import 'package:comptabli_blog/app/modules/comment/bloc/comment_bloc.dart';
 import 'package:comptabli_blog/app/modules/comment/data/model/comment.dart';
+import 'package:comptabli_blog/app/screens/Comments/widgets/editableText.dart';
 import 'package:comptabli_blog/app/themes/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,8 @@ class CommentList extends StatefulWidget {
 class _CommentFormState extends State<CommentList> {
   CommentBloc bloc;
   TextEditingController _editingController = TextEditingController();
-
+  bool _isEditingText = false;
+  String isOwner ;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
@@ -68,31 +70,38 @@ class _CommentFormState extends State<CommentList> {
   }
 
   Widget buildCommentsList(List<Comment> comment) {
-    bool _isEditingText = false;
-    bool isOwner = false;
-
     return ListView.builder(
       itemCount: comment.length,
       itemBuilder: (ctx, pos) {
         final item = comment[pos];
+        
         isOwnerId() async {
           FirebaseUser currentUser = await _auth.currentUser();
           setState(() {
-            isOwner = currentUser.uid == comment[pos].userId;
+            isOwner = currentUser.uid ;
+          
           });
+          return  currentUser.uid;
         }
+       isOwnerId().then((value) => isOwner = value);
 
+        //print(isOwner);
+        bool ok = item.userId == isOwner;
+
+        if(ok)
+                
         return Padding(
             padding: const EdgeInsets.all(6.0),
-            child: isOwner
-                ? InkWell(
+            child:
+                InkWell(
                     onTap: () {},
                     child: Dismissible(
                         key: Key(item.toString()),
                         onDismissed: (direction) {
                           bloc = BlocProvider.of<CommentBloc>(context);
                           bloc.add(CommentDeleteEvent(
-                              id: widget.postId, commentId: comment[pos].id));
+                              id: widget.postId,
+                              commentId: comment[pos].commentId));
                           setState(() {
                             comment.removeAt(pos);
                           });
@@ -101,51 +110,27 @@ class _CommentFormState extends State<CommentList> {
                               SnackBar(content: Text("comment deleted")));
                         },
                         child: ListTile(
-                          title: Text(
-                            comment[pos].username +
-                                " : " +
-                                comment[pos].comment,
+                          /*title: Text(
+                            comment[pos].username + " : ",
                             style: TextStyle(color: kColorBlack),
+                          ),*/
+                          title: EditableTextField(
+                            comment: comment[pos].username + " : "+comment[pos].comment,
+                            postId: widget.postId,
+                            commentId: comment[pos].commentId,
                           ),
                           /*leading: CircleAvatar(
                   backgroundImage:
                       CachedNetworkImageProvider(comment[pos].url)),
             ),*/
-                          onTap: () {
-                            setState(() {
-                              _isEditingText = true;
-                            });
-
-                            if (_isEditingText) {
-                              return Container(
-                                width: 150,
-                                child: TextField(
-                                  onSubmitted: (newValue) {
-                                    setState(() {
-                                      comment[pos].comment = newValue;
-                                      _isEditingText = false;
-                                    });
-                                    bloc =
-                                        BlocProvider.of<CommentBloc>(context);
-                                    bloc.add(CommentUpdateEvent(
-                                        comment: comment[pos].comment,
-                                        id: widget.postId,
-                                        commentId: comment[pos].id));
-                                  },
-                                  autofocus: true,
-                                  controller: _editingController,
-                                ),
-                              );
-                            }
-                          },
                         )),
-                  )
-                : ListTile(
+                  ));
+                return ListTile(
                     title: Text(
-                      comment[pos].username + " : " + comment[pos].comment,
+                      comment[pos].username + " : " + comment[pos].comment ,
                       style: TextStyle(color: kColorBlack),
                     ),
-                  ));
+                  );
       },
     );
   }

@@ -7,7 +7,6 @@ import 'package:comptabli_blog/app/modules/compte/bloc/compte_event.dart';
 import 'package:comptabli_blog/app/modules/compte/data/model/compte.dart';
 import 'package:comptabli_blog/app/screens/compte_screen/widgets/choice.dart';
 import 'package:comptabli_blog/app/screens/compte_screen/widgets/item.dart';
-import 'package:comptabli_blog/app/screens/profile/profileScreen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,6 +31,7 @@ class InterestsPage extends StatefulWidget {
 }
 
 class _InterestsPageState extends State<InterestsPage> {
+  //RouteSettings settings;
 
   List<Choice> choices = [
     Choice(MyIcons.paint, "Art & culture"),
@@ -58,15 +58,45 @@ class _InterestsPageState extends State<InterestsPage> {
         ),
 
       );
-      String downloadUrl = await uploadPhotos(widget.profileImage);
+
+        
+      /*String downloadUrl = await uploadPhotos(widget.profileImage);
       widget.compte.photoUrl = downloadUrl;
       BlocProvider.of<CompteBloc>(context).add(
               UpdateProfileEvent(compte: widget.compte),
 
 
-      );
+      );*/
     
   }
+
+  Future<void> _showMyDialog() async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Alert'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('This account already exists'),
+              
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          RaisedButton(
+            child: Text('Close'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -101,14 +131,17 @@ class _InterestsPageState extends State<InterestsPage> {
           );
         }
 
-        if (state is CreateCompleted) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProfileScreen(),
-              ),
-            );
-          }
+         if (state is AccountExist) {
+         /* Scaffold.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message.toString()),
+              backgroundColor: Colors.red,
+            ),
+          );*/
+          _showMyDialog();
+        }
+
+        
       }, 
     
     child:Scaffold(
@@ -136,10 +169,12 @@ class _InterestsPageState extends State<InterestsPage> {
                 new Container(
                   height: 5,
                 ),
+                
                 Center(
                   child: RaisedButton.icon(
                     color: Colors.black,
                     onPressed: () {
+                     
                      _onCreateButtonPressed();
                       
                     },

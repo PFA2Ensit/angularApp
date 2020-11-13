@@ -54,7 +54,7 @@ class CommentRepository {
         .then((querySnapshot) {
       querySnapshot.documents.forEach((result) {
         Comment comment = new Comment(
-          id: result['commentId'],
+          commentId: result['commentId'],
           comment: result["comment"],
           userId: result['userId'],
           username: result['username'],
@@ -82,7 +82,9 @@ class CommentRepository {
   Future<void> deleteComment(String id, String commentId) async {
     FirebaseUser currentUser = await _auth.currentUser();
     DocumentSnapshot documentSnapshot =
-        await commentsRef.document(commentId).get();
+        await commentsRef.document(id).collection("comments")
+            .document(commentId).get();
+
     bool isCommentOwner =
         documentSnapshot.data['userId'].toString() == currentUser.uid;
     if (isCommentOwner) {

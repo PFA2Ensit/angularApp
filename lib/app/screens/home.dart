@@ -75,14 +75,14 @@ class ButtomNavigation extends StatefulWidget{
       body:PageView(
        children:<Widget>[
         //HomeScreen(),
-        MessagingDemo(),
+        //MessagingDemo(),
         Search(),
         ArticleScreen(),
 
        NotificationsPage(),
       UserInformation(),
       //MyHomePage(),
-      // ScanScreen()
+      ScanScreen()
         
          
          

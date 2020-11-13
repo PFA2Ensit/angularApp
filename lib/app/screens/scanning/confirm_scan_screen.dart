@@ -167,7 +167,7 @@ class _ScanConfirmState extends State<ScanConfirm> {
                 itemCount: receiptInfo.items.length,
                 itemBuilder: (BuildContext context, int i) {
                   return ListTile(
-                    title: Text('${receiptInfo.items[i].name != '' ? receiptInfo.items[i].name : 'Unknown Item'}'),
+                    title: Text('${receiptInfo.items[0].name!= '' ? receiptInfo.items[0].name: 'Unknown Item'}'),
                     trailing: Text('${formatCurrency.format(receiptInfo.items[i].totalCost)}'),
                   );
                 } 

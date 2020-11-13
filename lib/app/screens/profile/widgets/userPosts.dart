@@ -4,7 +4,6 @@ import 'package:comptabli_blog/app/modules/blog/bloc/blog_bloc.dart';
 import 'package:comptabli_blog/app/modules/blog/bloc/blog_event.dart';
 import 'package:comptabli_blog/app/modules/blog/bloc/blog_state.dart';
 import 'package:comptabli_blog/app/modules/blog/data/model/Item.dart';
-import 'package:comptabli_blog/app/screens/article_screen/widgets/GridItemDetails.dart';
 import 'package:comptabli_blog/app/themes/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

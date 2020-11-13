@@ -1,102 +1,118 @@
+import 'package:comptabli_blog/app/themes/constants.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
-
-class MessagingDemo extends StatefulWidget{
+class MessagingDemo extends StatefulWidget {
   @override
   _MessagingDemoState createState() => _MessagingDemoState();
 }
 
 class _MessagingDemoState extends State<MessagingDemo> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
- List<Message> messagesList;
+  TextEditingController _editingController = TextEditingController();
+  bool _isEnabled = false;
 
- _getToken() {
-   // _firebaseMessaging.deleteInstanceID();
+  _getToken() {
+    // _firebaseMessaging.deleteInstanceID();
     _firebaseMessaging.getToken().then((token) {
       print("Device Token: $token");
     });
-}
-@override
-void initState(){
-  super.initState();
-   _getToken();
-   messagesList = List<Message>();
-   _configureFirebaseListeners();
+  }
 
-}
- 
-_configureFirebaseListeners() {
+  @override
+  void initState() {
+    super.initState();
+    //_getToken();
+    //_configureFirebaseListeners();
+  }
+
+  _configureFirebaseListeners() {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print('onMessage: $message');
-        _setMessage(message); 
-        
       },
       onLaunch: (Map<String, dynamic> message) async {
         print('onLaunch: $message');
-        _setMessage(message);
       },
       onResume: (Map<String, dynamic> message) async {
         print('onResume: $message');
-        _setMessage(message);
       },
     );
     _firebaseMessaging.requestNotificationPermissions(
       const IosNotificationSettings(sound: true, badge: true, alert: true),
     );
-}
- 
-_setMessage(Map<String, dynamic> message) {
-    final notification = message['notification'];
-    final data = message['data'];
-    final String title = notification['title'];
-    final String body = notification['body'];
-    String mMessage = data['message'];
-    print("Title: $title, body: $body, message: $mMessage");
-    setState(() {
-      Message msg = Message(title, body, mMessage);
-      messagesList.add(msg);
-    });
-}
- 
-@override
+  }
+
+  
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("demo"),
-      ),
-      body: ListView.builder(
-        itemCount: null == messagesList ? 0 : messagesList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            child: Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Text(
-                messagesList[index].body,
-                style: TextStyle(
-                  fontSize: 16.0,
-                  color: Colors.black,
+        appBar: AppBar(
+          title: Text("demo"),
+        ),
+        body: ListView.builder(
+            itemCount: 2,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                title: _editTitleTextField(),
+
+                trailing: InkWell(
+                  child: new Icon(
+                    Icons.edit,
+                    color: Colors.black,
+                  ),
+                  onTap: () {
+                    setState(() {
+                      _isEnabled = !_isEnabled;
+                    });
+                    print(_isEnabled);
+                  },
                 ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
+              );
+            }));
   }
 }
- 
- 
-class Message {
-  String title;
-  String body;
-  String message;
-  Message(title, body, message) {
-    this.title = title;
-    this.body = body;
-    this.message = message;
+
+class _editTitleTextField extends StatefulWidget{
+bool _isEnabled = false;
+TextEditingController _editingController = TextEditingController();
+
+  
+
+  @override
+  __editTitleTextFieldState createState() => __editTitleTextFieldState();
+}
+
+class __editTitleTextFieldState extends State<_editTitleTextField> {
+  @override
+  Widget build(BuildContext context) {
+   if (widget._isEnabled)
+      return Center(
+        child: TextField(
+          onSubmitted: (newValue) {
+            setState(() {
+              widget._editingController.text = newValue;
+               widget._isEnabled= false;
+            });
+          },
+          autofocus: true,
+          controller: widget._editingController,
+        ),
+      );
+    return InkWell(
+        onTap: () {
+          setState(() {
+            widget._isEnabled = true;
+          });
+        },
+        child: Text(
+          'hello',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 18.0,
+          ),
+        ));
   }
 }

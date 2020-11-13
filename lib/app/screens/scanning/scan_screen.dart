@@ -2,6 +2,7 @@
 import 'dart:io';
 
 //import 'package:camera/camera.dart';
+import 'package:comptabli_blog/app/screens/scanning/detail.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:async';
@@ -141,7 +142,7 @@ Future getImage() async {
       body:Container(child:isClicked ?Column(children: [Image.file(_image),RaisedButton(onPressed: () {  Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ScanConfirm(imageFile:_image,),
+                builder: (context) => DetailScreen(_image),
               ),
             ); },
       child: Text("go to scan"),)],) : Text("hello") ,), /*FutureBuilder<void>(

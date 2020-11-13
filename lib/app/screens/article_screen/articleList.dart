@@ -33,7 +33,7 @@ class ArticleScreen extends StatefulWidget {
 
 class ArticleScreenState extends State<ArticleScreen> {
   BlogBloc articleBloc;
-  String filter = ComptaAppBar.filter;
+  String filter = BlogAppBar.filter;
 
   @override
   void initState() {
@@ -102,7 +102,7 @@ class ArticleScreenState extends State<ArticleScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: ComptaAppBar(),
+      appBar: BlogAppBar(),
       body: new ListView(
         children: <Widget>[
           new Padding(

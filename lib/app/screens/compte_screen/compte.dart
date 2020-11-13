@@ -257,12 +257,12 @@ class _CompteFormState extends State<CompteForm>
                                   color: kColorBlack,
                                   tags: _tags,
                                   onDelete: (tag) {
-                                    print(tag);
                                   },
                                   onInsert: (tag) {
-                                    print(tag);
+                                    
                                     _tags.add(tag);
                                     compte.expertises = _tags;
+                                    print(compte.expertises);
                                   },
                                 )
 
@@ -295,7 +295,7 @@ class _CompteFormState extends State<CompteForm>
                               }),
                         )*/),
                     new Container(
-                      padding: new EdgeInsets.all(55.0),
+                      padding: new EdgeInsets.all(40.0),
                     ),
                     new Container(
                         width: 350,

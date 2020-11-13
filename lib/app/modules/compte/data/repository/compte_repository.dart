@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:comptabli_blog/app/modules/compte/data/model/compte.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+bool error;
 class CompteRepository{
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final usersReference = Firestore.instance.collection("users");
 
-  Future<void> createCompte(String fullname,String position,List<String> expertises,List<String> interests) async {
+  Future<bool> createCompte(String fullname,String position,List<String> expertises,List<String> interests) async {
     final FirebaseUser currentUser = await _auth.currentUser();
     DocumentSnapshot documentSnapshot = await usersReference.document(currentUser.uid).get();
-  
+    //bool error;
    if(!documentSnapshot.exists){
        usersReference.document(currentUser.uid).setData({
           "id":currentUser.uid,
@@ -22,10 +22,13 @@ class CompteRepository{
        }).catchError((e) {
         print(e);
     });
-       
+      error=true; 
    }
+   else {
+     error = false;
+     print("account already exists");}
     
-    
+    return error;
   }
 
   Future<Compte> getUserInfo() async {

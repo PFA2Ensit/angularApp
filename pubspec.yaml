@@ -55,6 +55,7 @@ dependencies:
   intl: ^0.16.1
   mlkit: ^0.15.1
   firebase_messaging: ^6.0.12
+  dcdg: ^2.0.1
 
   
 

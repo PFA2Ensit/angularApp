@@ -70,18 +70,19 @@ exports.onCreateActivityFeedItem = functions.firestore
             },
         };
 
-        admin.messaging().sendToDevice(tokens,payload)
+        admin.messaging().sendToDevice(androidNotificationToken
+        ,payload)
         .then(response =>
         {
+            console.log(body);
             console.log("Successfully sent message", response);
-            console.log(response.results[0].error);
+            //console.log(response.results[0].error);
         })
         .catch(error =>
 
         {
             
-            console.log(body);
-            console.log(androidNotificationToken);
+
             console.log("Error sending message", error);
            
         })

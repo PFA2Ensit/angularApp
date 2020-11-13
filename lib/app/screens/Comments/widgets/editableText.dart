@@ -1,26 +1,39 @@
+import 'package:comptabli_blog/app/modules/comment/bloc/comment_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class EditableText extends StatefulWidget {
-  String initialText;
-  EditableText({this.initialText});
+class EditableTextField extends StatefulWidget {
+  String comment;
+  String postId;
+  String commentId;
+  EditableTextField({this.comment, this.postId, this.commentId});
   @override
-  _EditableTextState createState() => _EditableTextState();
+  _EditableTextFieldState createState() => _EditableTextFieldState();
 }
 
-class _EditableTextState extends State<EditableText> {
+class _EditableTextFieldState extends State<EditableTextField> {
   bool _isEditingText = false;
-  
+  CommentBloc bloc;
+
   TextEditingController _editingController;
   @override
   Widget build(BuildContext context) {
     if (_isEditingText)
       return Center(
         child: TextField(
+          onTap: () {
+            _isEditingText = false;
+          },
           onSubmitted: (newValue) {
             setState(() {
-              widget.initialText = newValue;
+              widget.comment = newValue;
               _isEditingText = false;
             });
+            bloc = BlocProvider.of<CommentBloc>(context);
+            bloc.add(CommentUpdateEvent(
+                comment: newValue,
+                id: widget.postId,
+                commentId: widget.commentId));
           },
           autofocus: true,
           controller: _editingController,
@@ -29,11 +42,11 @@ class _EditableTextState extends State<EditableText> {
     return InkWell(
         onTap: () {
           setState(() {
-            _isEditingText = true;
+            _isEditingText = !_isEditingText;
           });
         },
         child: Text(
-          widget.initialText,
+          widget.comment,
           style: TextStyle(
             color: Colors.black,
             fontSize: 18.0,

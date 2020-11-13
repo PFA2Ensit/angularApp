@@ -31,8 +31,10 @@ class _CommentsPageState extends State<CommentsPage> {
             Expanded(
               child: CommentList(postId: widget.postId),
             ),
-            Divider(),
-            CommentForm(postId: widget.postId,postOwnerId:widget.postOwnerId,url:widget.postImage),
+            
+             Expanded(
+
+            child:CommentForm(postId: widget.postId,postOwnerId:widget.postOwnerId,url:widget.postImage)),
           ],
         ));
   }

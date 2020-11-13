@@ -20,13 +20,21 @@ class CompteBloc extends Bloc<CompteEvent, CompteState> {
   Stream<CompteState> mapEventToState(
     CompteEvent event,
   ) async* {
+    
     if (event is CreateCompte){
       try {
-        await repository.createCompte(
-               event.compte.fullname,event.compte.position,event.compte.expertises,event.compte.interests);
-        yield CreateCompleted();
+         if(await repository.createCompte(
+               event.compte.fullname,event.compte.position,event.compte.expertises,event.compte.interests))
+               {
+                yield CreateCompleted();}
+               else{
+                yield AccountExist(message: "account already exists");
+               }
+        
+        
       } on PlatformException catch (error) {
         yield  CreateFailed(error: error);
+             
       } catch (ex) {
         yield  CreateFailed(
           error: PlatformException(
@@ -35,6 +43,7 @@ class CompteBloc extends Bloc<CompteEvent, CompteState> {
                 'An error has occued when creating your account, please try again later',
           ),
         );
+        
       }
     }
     else if (event is ViewProfileEvent) {
